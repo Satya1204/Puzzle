@@ -1,0 +1,42 @@
+Reverse Card.png
+size:1442,2112
+filter:Linear,Linear
+pma:true
+Blue
+bounds:1122,1792,318,318
+Green
+bounds:1122,1472,318,318
+Inner Glow
+bounds:2,1248,558,862
+Inner Glow_B
+bounds:2,384,558,862
+Inner Glow_G
+bounds:562,1248,558,862
+Red
+bounds:1122,1152,318,318
+Yellow
+bounds:1122,832,318,318
+cross
+bounds:1122,636,193,194
+offsets:1,1,195,197
+cross_G
+bounds:1122,440,193,194
+offsets:1,1,195,197
+cross_R
+bounds:1148,244,193,194
+offsets:1,1,195,197
+cross_Y
+bounds:1148,48,193,194
+offsets:1,1,195,197
+outer glow
+bounds:2,2,380,380
+offsets:3,3,386,386
+outer glow_B
+bounds:384,2,380,380
+offsets:3,3,386,386
+outer glow_G
+bounds:766,2,380,380
+offsets:3,3,386,386
+shadow
+bounds:562,384,558,862
+offsets:1,1,560,864
