@@ -6,13 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/WaterSortPuzzleColorGame/Scenes/Loading.unity
-    guid: 02d9ff229408dae48888ec5537f49d67
-  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
     path: Assets/WaterSortPuzzleColorGame/Scenes/Menu.unity
     guid: 72baa581a8e7c6244947c39067c3118d
-  - enabled: 1
+  - enabled: 0
     path: Assets/WaterSortPuzzleColorGame/Scenes/LevelGenerator.unity
     guid: 7ea9a7c692f6a9b4185e0a3514e6acbe
   m_configObjects: {}
-  m_UseUCBPForAssetBundles: 0
