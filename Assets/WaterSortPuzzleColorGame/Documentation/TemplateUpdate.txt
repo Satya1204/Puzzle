@@ -1,0 +1,160 @@
+v1.1.0 
+Bug Fixed
+1. Fixed crash issue after receiving reward ad.
+- Updated WaterSortPuzzleColorGame/Scripts/GoogleAds/AdsManager.cs
+- Function updated: ShowRewardedAd(Action onComplete)
+
+2. Fixed Collection Panel tab selection issue.
+- Updated WaterSortPuzzleColorGame/Scripts/UIScreens/Pages/CollectionPanel.cs
+- Function updated: OnPageResume()
+
+------------------------------------------------
+
+v1.0.10
+- Updated ad scripts in WaterSortPuzzleColorGame/Scripts/GoogleAds according to latest Ads SDK versions.
+
+------------------------------------------------
+
+
+v1.0.9
+Bug Fixed
+1. Updated WaterSortPuzzleColorGame/Prefebs/Shop/
+  - BoxCoins -> Inspector -> IAP Item Holder -> Select Product Key = Box Coins
+  - ChestCoins -> Inspector -> IAP Item Holder -> Select Product Key = Chest Coins
+
+2. In Scene "Menu" -> Canvas -> UnlockedBoosterPanel -> Changed Claim Button Text
+
+
+------------------------------------------------------
+
+v1.0.8
+Update: Migrated from Old Input System to New Input System
+
+1. Input System Installation Steps:
+   - Open Unity → Window → Package Manager
+   - Search for "Input System"
+   - Click "Install" (recommended version 1.14.2 or newer)
+   - Go to Edit → Project Settings → Player → Other Settings
+   - Set "Active Input Handling" to "Input System Package (New)"
+   - Restart Unity after applying changes.
+
+2. Scene Changes:
+   - Scene Path: WaterSortPuzzleColorGame/Scenes/Menu
+   - In the "EventSystem" GameObject:
+     - Remove: Standalone Input Module
+     - Add: Input System UI Input Module
+
+3. Script Updates:
+   - Updated scripts to use the new Input System API:
+     - WaterSortPuzzleColorGame/Scripts/GameManager.cs
+     - WaterSortPuzzleColorGame/Scripts/GameController/ActionController.cs
+     - WaterSortPuzzleColorGame/Scripts/Tutorial/ClickController.cs
+  - Add New Folder: HexaSortPuzzleGame/Scripts/Input
+
+
+-------------------------------------------------
+
+v1.0.7
+Bug Fixed
+- Updated LoadingPanel prefab for improved performance and visuals.
+- Upgraded Unity version to the latest release to support new security updates and compatibility improvements.
+
+------------------------------------------------------
+
+v1.0.6
+Add New Feature and Bug Fixed
+- Added new In-App Purchase (IAP v5) to support Google Play warning
+- Added new screen for Unlocked Skin, Unlocked Booster and Purchase Booster
+- Added Banner Ads
+- Migrated shop items, skin items from JSON to ScriptableObjects for easier editing
+- Implemented Google AdMob consent form code
+- Integrated ad mediation with Unity Ads and ironSource
+- No resizability/orientation restrictions
+- Improved code structure for cleaner and more powerful project organization
+--------------------------------------------------------------
+
+v1.0.5
+Bug Fixes
+- Update ShopPanel.cs, MoveAnimation.cs, CanvasController.cs, CollectionPanel.cs
+
+--------------------------------------------------------------
+
+v1.0.4
+Bug Fixes
+- Updated BackEvent() in BackHandler.cs to prioritize closing SuccessErrorPanel even when LevelCompletePanel is also open.
+
+--------------------------------------------------------------
+
+v1.0.3
+
+This update focuses on improving responsive UI support, better code structure, and maintainability. Please follow the note at the end for a fresh setup.
+
+1. Scripts
+
+- CanvasController.cs
+  - Added UpdateCanvasMatch() function.
+  - Modified CanvasScaler settings to support responsive UI.
+
+- LevelMakerCreateBottle.cs
+  - Added RepositionBottles() to calculate bottle positions in landscape mode.
+
+- GameManager.cs
+  - Updated the Start() method for improved initialization.
+
+- MapPanel.cs
+  - Updated to support smooth scrolling and responsive UI adjustments.
+
+- ScreenResizeManager.cs
+  - New script to handle responsive UI resizing across different screens.
+
+- Button Click Listeners
+  - Moved all button listeners from Inspector to scripts for better prefab consistency and reliability.
+
+- Obsolete Script Cleanup
+  - Removed:
+    - ShowHidable.cs
+    - IShowHideable.cs
+    - DestroyToasterMessage.cs
+    - NavigationBar.cs
+
+- BackHandler.cs
+  - Created to manage all back navigation and event handling centrally.
+
+- New Folder Structure
+  - Scripts/Navigations/ → Navigation-related scripts.
+  - Scripts/Popups/ → All popup-related scripts now organized separately.
+
+- PopupUtils.cs
+  - Updated to reflect the new popup system.
+
+2. Prefabs
+
+- FreeCoinPopup
+  - Removed DestroyToasterMessage component from the Inspector.
+
+3. UI Hierarchy Changes
+
+- TopList
+  - Adjusted CoinButton position for responsive layout.
+
+- HomePanel
+  - Updated all element positions and sizes for better responsiveness.
+
+- BottomList
+  - Redesigned to support responsive UI.
+
+- CollectionPanel / ShopPanel / MapPanel
+  - Updated popup and child object positions for responsive layout.
+
+- ScreenResizeManager
+  - Added as a new GameObject in the hierarchy.
+
+⚠️ Important Note
+
+Please create a new Unity project and import the updated asset package.
+Many UI components and scripts have been changed to support responsive UI and clean architecture.
+
+---------------------------------------------------------------------------
+
+v1.0.2
+First Release

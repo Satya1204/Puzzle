@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f62a9a6361bacc41afa0e48798b1819, type: 3}
+  m_Name: Booster AddTube Settings
+  m_EditorClassIdentifier: 
+  type: 1
+  icon: {fileID: 21300000, guid: b695367b1e1770849820b954e3fa6c64, type: 3}
+  inActiveIcon: {fileID: 21300000, guid: 939968b27fdff664e9b61d535dc42626, type: 3}
+  behaviorPrefab: {fileID: 3281714299381870324, guid: 5b0a713231e0c94438ca51d3784008b4, type: 3}
+  title: Tube
+  description: Add Extra Empty Tube!
+  unlockLevel: 5
+  noOfClaim: 3
+  coins: 80
+  coinReward: 3
+  adsReward: 1

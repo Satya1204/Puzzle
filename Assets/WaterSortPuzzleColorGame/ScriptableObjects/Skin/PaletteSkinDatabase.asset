@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8dc5df68f06bd4aadffa4336ec4c40, type: 3}
+  m_Name: PaletteSkinDatabase
+  m_EditorClassIdentifier: 
+  skins:
+  - id: 1
+    image: {fileID: 21300000, guid: f9f81b044bb2d88409f3ee07cdba6032, type: 3}
+    unlockType: 0
+    unlockValue: 1
+    colorPalette: {fileID: 11400000, guid: a2513ce9cbefe8f47938e254f615d4cb, type: 2}
+  - id: 2
+    image: {fileID: 21300000, guid: 8abbfa94a533c314dbef1a617d785692, type: 3}
+    unlockType: 0
+    unlockValue: 21
+    colorPalette: {fileID: 11400000, guid: 6d91ca5085b4a0046bbe54b4e5ab3429, type: 2}
+  - id: 3
+    image: {fileID: 21300000, guid: 52c4add2d43ab3f4c9849c888c78608a, type: 3}
+    unlockType: 0
+    unlockValue: 38
+    colorPalette: {fileID: 11400000, guid: 2274faab3d13cef4c983c3b8c02404db, type: 2}
+  - id: 4
+    image: {fileID: 21300000, guid: 25ff0cf10617f974bb514165c34e8ad2, type: 3}
+    unlockType: 0
+    unlockValue: 55
+    colorPalette: {fileID: 11400000, guid: 9aac715ae79855b43a144bc5a8ebedeb, type: 2}
+  - id: 5
+    image: {fileID: 21300000, guid: bee860fe18d8b6240979c5df7abbbcd3, type: 3}
+    unlockType: 0
+    unlockValue: 88
+    colorPalette: {fileID: 11400000, guid: 63e12587b7d1dde4aa219c92b43f91aa, type: 2}
+  - id: 6
+    image: {fileID: 21300000, guid: 9e788a01a8f920f458d7397fa58aab7d, type: 3}
+    unlockType: 0
+    unlockValue: 101
+    colorPalette: {fileID: 11400000, guid: 35f6c5a43da5e0549825e4655095866d, type: 2}
+  - id: 7
+    image: {fileID: 21300000, guid: 46d9b52177338754199ea64211e68420, type: 3}
+    unlockType: 0
+    unlockValue: 225
+    colorPalette: {fileID: 11400000, guid: 448f3bd33e5fb1443ad013ae115f9154, type: 2}
+  - id: 8
+    image: {fileID: 21300000, guid: 0d5690eb7a47be547b476dfcf04ef545, type: 3}
+    unlockType: 1
+    unlockValue: 2500
+    colorPalette: {fileID: 11400000, guid: 883e1ccdca023bf40b89c7a8e1b14e53, type: 2}
+  - id: 9
+    image: {fileID: 21300000, guid: 3c4f4c42a771f9341bd05f089743f292, type: 3}
+    unlockType: 1
+    unlockValue: 5000
+    colorPalette: {fileID: 11400000, guid: b46a25f805cfb6c43bf2c8a138625276, type: 2}

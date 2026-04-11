@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ae931f1381c70458f1d1d76b22073a, type: 3}
+  m_Name: TubeSkinDatabase
+  m_EditorClassIdentifier: 
+  skins:
+  - id: 1
+    image: {fileID: 21300000, guid: 8a596254aa58f8843a3828afcdfa31a5, type: 3}
+    unlockType: 0
+    unlockValue: 1
+    bottlePrefab: {fileID: 5515774976861772799, guid: a2e7f03b677c0c343b1c9c1317e86e6f, type: 3}
+  - id: 2
+    image: {fileID: 21300000, guid: 80bb7e0469d8dd2488b50863c094fb07, type: 3}
+    unlockType: 0
+    unlockValue: 15
+    bottlePrefab: {fileID: 5515774976861772799, guid: 2b50d4d07a8047e41a0727d30d5754dd, type: 3}
+  - id: 15
+    image: {fileID: 21300000, guid: f7087474d7ccd1c4b9cd39cea5af1bf3, type: 3}
+    unlockType: 1
+    unlockValue: 5000
+    bottlePrefab: {fileID: 5515774976861772799, guid: 39b93123b2e9e99428ef35e54af14b09, type: 3}
+  - id: 3
+    image: {fileID: 21300000, guid: bc033749cdb4f764b9ba045d765df1e8, type: 3}
+    unlockType: 0
+    unlockValue: 35
+    bottlePrefab: {fileID: 5515774976861772799, guid: 9135332e3f5ed624a8cddcda74ec9c58, type: 3}
+  - id: 4
+    image: {fileID: 21300000, guid: c0bb6efdc9e56d34592c1c2c67ed22af, type: 3}
+    unlockType: 0
+    unlockValue: 75
+    bottlePrefab: {fileID: 5515774976861772799, guid: f547b167b7219c94abae60f2e4dab153, type: 3}
+  - id: 5
+    image: {fileID: 21300000, guid: 68a985f031ddaa8408947b7154d4a89a, type: 3}
+    unlockType: 0
+    unlockValue: 99
+    bottlePrefab: {fileID: 5515774976861772799, guid: ad20c6b28043ebd4c9448544516081ff, type: 3}
+  - id: 6
+    image: {fileID: 21300000, guid: 67649667454077647b65a40f16e865e1, type: 3}
+    unlockType: 0
+    unlockValue: 125
+    bottlePrefab: {fileID: 5515774976861772799, guid: 4c8018cb5dc81bc41b9734a935cd0af9, type: 3}
+  - id: 14
+    image: {fileID: 21300000, guid: d452035f196cb634697f637ec02f7fef, type: 3}
+    unlockType: 1
+    unlockValue: 4800
+    bottlePrefab: {fileID: 5515774976861772799, guid: 44eaf4d927441dd479a46f02784f05ba, type: 3}
+  - id: 7
+    image: {fileID: 21300000, guid: c5acfc4ad6572524a9b7a4ee26fd3df5, type: 3}
+    unlockType: 0
+    unlockValue: 151
+    bottlePrefab: {fileID: 5515774976861772799, guid: a880a1aa06704f04a91db4baf0fc718f, type: 3}
+  - id: 8
+    image: {fileID: 21300000, guid: 452217f2061d2354ab32aaef78b33ddd, type: 3}
+    unlockType: 0
+    unlockValue: 250
+    bottlePrefab: {fileID: 5515774976861772799, guid: d418549195a10ba48b826767d73fba6b, type: 3}
+  - id: 13
+    image: {fileID: 21300000, guid: ef1c3eb1165b0b443897688a1db161f9, type: 3}
+    unlockType: 1
+    unlockValue: 3500
+    bottlePrefab: {fileID: 5515774976861772799, guid: 413c6ec20364ebf4ebbe88cb26d4dc11, type: 3}
+  - id: 9
+    image: {fileID: 21300000, guid: fb36017d074b5054aba78e97c6082fb4, type: 3}
+    unlockType: 0
+    unlockValue: 350
+    bottlePrefab: {fileID: 5515774976861772799, guid: 645138825a692b64eb130bc445778b20, type: 3}
+  - id: 10
+    image: {fileID: 21300000, guid: 1000e994ceeed724db01fc5e1ff1a4b6, type: 3}
+    unlockType: 0
+    unlockValue: 500
+    bottlePrefab: {fileID: 5515774976861772799, guid: d50e9122e9485514f981a6151caf364b, type: 3}
+  - id: 11
+    image: {fileID: 21300000, guid: fe8311b621a0fb443ad020c5731d40e2, type: 3}
+    unlockType: 0
+    unlockValue: 655
+    bottlePrefab: {fileID: 5515774976861772799, guid: 394b30e5813f43748ae1ad54ff6abb42, type: 3}
+  - id: 12
+    image: {fileID: 21300000, guid: 2530c929e66624c4b85868d3ed2a1bb7, type: 3}
+    unlockType: 1
+    unlockValue: 2000
+    bottlePrefab: {fileID: 5515774976861772799, guid: be4a91d92a409ce458e9e899cc7617d6, type: 3}

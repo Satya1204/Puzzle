@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975184ba2cb96ba44a21edb3e150cff4, type: 3}
+  m_Name: Game Settings
+  m_EditorClassIdentifier: 
+  levelIndex: 0
+  totalCompletedLevelIndex: -1
+  coins: 10
+  isMusicEnable: 1
+  isSoundEnable: 1
+  appPackageName: com.payalpatel.watersortpuzzle
+  developerId: Payal Vaghasiya
+  privacyPolicy: https://sites.google.com/view/water-sort-puzzle-color-game/privacy-policy

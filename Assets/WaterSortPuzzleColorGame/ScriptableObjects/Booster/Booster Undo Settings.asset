@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1853f407e6d7f429bbcb096cda66d1, type: 3}
+  m_Name: Booster Undo Settings
+  m_EditorClassIdentifier: 
+  type: 0
+  icon: {fileID: 21300000, guid: 2a4bec52b95b30f429ae29a120a1cba8, type: 3}
+  inActiveIcon: {fileID: 3167535706780295018, guid: cdb93f1edbe2d8f41a8b32816257a6b4, type: 3}
+  behaviorPrefab: {fileID: 7879872113269910340, guid: b87512c2723984548b62da6cefd329d1, type: 3}
+  title: Undo
+  description: Undo Your Last Move!
+  unlockLevel: 3
+  noOfClaim: 3
+  coins: 40
+  coinReward: 2
+  adsReward: 1

@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5b4eb0b5c831949995480b332cb7a7, type: 3}
+  m_Name: IAP Setting
+  m_EditorClassIdentifier: 
+  iapItems:
+  - androidID: no_ads
+    productKeyType: 0
+    productType: 1
+    price: 5.99
+    shopItem: {fileID: 8475082785068960729, guid: aafbd03a481258643a7572d886475671, type: 3}
+    shopUIType: 1
+  - androidID: citem1
+    productKeyType: 1
+    productType: 0
+    price: 2.99
+    shopItem: {fileID: 8475082785068960729, guid: e6148c615ff06e747ba13a3ee73eb8da, type: 3}
+    shopUIType: 0
+  - androidID: citem2
+    productKeyType: 2
+    productType: 0
+    price: 3.49
+    shopItem: {fileID: 8475082785068960729, guid: 54df29b46090a1a4da21628b0c098324, type: 3}
+    shopUIType: 0
+  - androidID: citem3
+    productKeyType: 3
+    productType: 0
+    price: 5.99
+    shopItem: {fileID: 8475082785068960729, guid: 0bcc8165d9f47b0459469cdd591e1e2b, type: 3}
+    shopUIType: 0
+  - androidID: citem4
+    productKeyType: 4
+    productType: 0
+    price: 11.99
+    shopItem: {fileID: 8475082785068960729, guid: f8c5a41deb296564ab706904403e36f5, type: 3}
+    shopUIType: 0
+  - androidID: citem5
+    productKeyType: 5
+    productType: 0
+    price: 23.99
+    shopItem: {fileID: 8475082785068960729, guid: 7134cfecaad4f2f46bd46a05e4e59170, type: 3}
+    shopUIType: 0

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836acbc80b447c147bb26ea198212546, type: 3}
+  m_Name: Success Error Database
+  m_EditorClassIdentifier: 
+  SuccessErrors:
+  - type: 1
+    title: Payment Successful!
+    sprite: {fileID: 21300000, guid: a10d12325ce2f7e4085c4c5ae805d62a, type: 3}
+    message: The payment has been done successfully.
+  - type: 0
+    title: Payment Failed!
+    sprite: {fileID: 21300000, guid: 4a8b2cd17f464c448a2a96f58fb86f13, type: 3}
+    message: Please try again later.
+  - type: 2
+    title: Internet Connetion!
+    sprite: {fileID: 21300000, guid: e93502bd3a4438c43997fc002f86b8c9, type: 3}
+    message: Please check your internet connection.
+  - type: 4
+    title: Network Error!
+    sprite: {fileID: 21300000, guid: 4a8b2cd17f464c448a2a96f58fb86f13, type: 3}
+    message: Please try again later!
+  - type: 3
+    title: Information
+    sprite: {fileID: 21300000, guid: 665fa30f49a7ed84c83cf3c61501a519, type: 3}
+    message: This feature will unlock in Level 5

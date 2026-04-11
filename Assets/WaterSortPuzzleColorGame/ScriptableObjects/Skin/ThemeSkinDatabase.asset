@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8d11a526ae89f44d970605fedd38a81, type: 3}
+  m_Name: ThemeSkinDatabase
+  m_EditorClassIdentifier: 
+  skins:
+  - id: 1
+    image: {fileID: 21300000, guid: 74ee0de44ba86994a9dbc77d6478c717, type: 3}
+    unlockType: 0
+    unlockValue: 1
+  - id: 2
+    image: {fileID: 21300000, guid: 702283bb52f77c44281c7c2fb9da57ab, type: 3}
+    unlockType: 0
+    unlockValue: 10
+  - id: 3
+    image: {fileID: 21300000, guid: ae2e7e035178ca0419877025cc09f95c, type: 3}
+    unlockType: 0
+    unlockValue: 25
+  - id: 14
+    image: {fileID: 21300000, guid: 19c6402019a55504ca9da32a2af4b580, type: 3}
+    unlockType: 1
+    unlockValue: 2000
+  - id: 4
+    image: {fileID: 21300000, guid: e1e5b42848139df458a167ceee18bf63, type: 3}
+    unlockType: 0
+    unlockValue: 50
+  - id: 5
+    image: {fileID: 21300000, guid: 96d5c95e4f2071f4897941ca07381712, type: 3}
+    unlockType: 0
+    unlockValue: 80
+  - id: 6
+    image: {fileID: 21300000, guid: df9d1554c34a6e84e8fff89af39960b9, type: 3}
+    unlockType: 0
+    unlockValue: 100
+  - id: 15
+    image: {fileID: 21300000, guid: 9ea182057ff845640b11fb63987c8d34, type: 3}
+    unlockType: 1
+    unlockValue: 3000
+  - id: 7
+    image: {fileID: 21300000, guid: f31cdede674db5b4f9589c72f79eaa7b, type: 3}
+    unlockType: 0
+    unlockValue: 150
+  - id: 8
+    image: {fileID: 21300000, guid: 3b128024d73bb824aad5b837c14ab147, type: 3}
+    unlockType: 0
+    unlockValue: 250
+  - id: 16
+    image: {fileID: 21300000, guid: 350218479e390f54ba0b90138816a502, type: 3}
+    unlockType: 1
+    unlockValue: 4000
+  - id: 9
+    image: {fileID: 21300000, guid: 4a4bbd751ec83854ea4916694c662936, type: 3}
+    unlockType: 0
+    unlockValue: 350
+  - id: 10
+    image: {fileID: 21300000, guid: b7fa4a0c8feb2a748a8a33aa2eb3c04c, type: 3}
+    unlockType: 0
+    unlockValue: 448
+  - id: 11
+    image: {fileID: 21300000, guid: d2ab838900c93bb4ab056cad88f35a5a, type: 3}
+    unlockType: 0
+    unlockValue: 580
+  - id: 12
+    image: {fileID: 21300000, guid: 5fc9ffb8daaa4f74796f169eb93ab301, type: 3}
+    unlockType: 0
+    unlockValue: 790
+  - id: 13
+    image: {fileID: 21300000, guid: 34265c590799bf748b1efbc2668fcc80, type: 3}
+    unlockType: 0
+    unlockValue: 1000
+  - id: 17
+    image: {fileID: 21300000, guid: 7aa036ff7dac58f4aa9c630030378e98, type: 3}
+    unlockType: 1
+    unlockValue: 5000

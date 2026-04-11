@@ -6,15 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/JigsawPuzzle/Scenes/MainScene.unity
-    guid: c9ba77c30f1fb6f4c97d344babe8a144
-  - enabled: 0
-    path: Assets/JigsawPuzzle/Scenes/LandscapeOrientationSample.unity
-    guid: 2a9ff19bce9d9e84ea5adc30f30a0253
-  - enabled: 0
-    path: Assets/JigsawPuzzle/Scenes/VideoPuzzleTestScene.unity
-    guid: e6c513babb32b7b47b1e1495b20ce48d
-  - enabled: 0
-    path: Assets/JigsawPuzzle/Scenes/PerformanceTest.unity
-    guid: 55f043d4fb303984cac4b34a4a688ef3
+    path: Assets/WaterSortPuzzleColorGame/Scenes/Loading.unity
+    guid: 02d9ff229408dae48888ec5537f49d67
+  - enabled: 1
+    path: Assets/WaterSortPuzzleColorGame/Scenes/Menu.unity
+    guid: 72baa581a8e7c6244947c39067c3118d
+  - enabled: 1
+    path: Assets/WaterSortPuzzleColorGame/Scenes/LevelGenerator.unity
+    guid: 7ea9a7c692f6a9b4185e0a3514e6acbe
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
