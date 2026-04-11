@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Puzzle.UI
+namespace PuzzleApp.UI
 {
     /// <summary>
     /// View-only: wires bottom bar buttons and raises <see cref="TabSelected"/>.

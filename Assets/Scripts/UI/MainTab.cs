@@ -1,4 +1,4 @@
-namespace Puzzle.UI
+namespace PuzzleApp.UI
 {
     public enum MainTab
     {
