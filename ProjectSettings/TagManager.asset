@@ -11,6 +11,8 @@ TagManager:
   - 
   - Water
   - UI
+  - LightLayer
+  - RopeWrapLayer
   - 
   - 
   - 
@@ -24,11 +26,9 @@ TagManager:
   - 
   - 
   - 
-  - UI/GameDialogs
-  - UI/TopBar
-  - UI/BottomBar
-  - UI/Menu
-  - UI/HUD
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -41,9 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: UI
-    uniqueID: 684589029
-    locked: 0
-  - name: UI Effects
-    uniqueID: 956160993
+  - name: OverLight
+    uniqueID: 2195882701
     locked: 0
