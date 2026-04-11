@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7881838001132604671}
   - component: {fileID: 3096755702039871947}
   m_Layer: 22
-  m_Name: Camera
+  m_Name: MenuCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
