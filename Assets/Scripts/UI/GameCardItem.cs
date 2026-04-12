@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using PuzzleApp.Features.GameCatalog;
 
 namespace PuzzleApp.UI
 {
     /// <summary>
-    /// Attach to the Game Card prefab root. Optional: wire <see cref="_button"/> in the Inspector.
+    /// View for a single game card.
     /// </summary>
     public class GameCardItem : MonoBehaviour
     {
@@ -13,28 +14,36 @@ namespace PuzzleApp.UI
 
         public event Action<int> Clicked;
 
-        public int Index { get; private set; }
+        public int GameId { get; private set; }
 
         void Awake()
         {
-            if (_button == null) _button = GetComponent<Button>();
+            if (_button == null)
+                _button = GetComponent<Button>();
         }
 
-        public void Bind(int index)
+        void OnDestroy()
         {
-            Index = index;
-            if (_button == null) _button = GetComponent<Button>();
-            if (_button == null) return;
+            if (_button != null)
+                _button.onClick.RemoveListener(OnPressed);
+        }
+
+        public void Bind(GameCardViewModel viewModel)
+        {
+            GameId = viewModel.Id;
+
+            if (_button == null)
+                _button = GetComponent<Button>();
+
+            if (_button == null)
+                return;
+
             _button.onClick.RemoveListener(OnPressed);
             _button.onClick.AddListener(OnPressed);
+
+            // Extend here: bind title, icon, lock state, or badge views.
         }
 
-        public void Bind(in GameCardDescriptor data, int index)
-        {
-            Bind(index);
-            // Extend here: title, icon from data when you add UI references.
-        }
-
-        void OnPressed() => Clicked?.Invoke(Index);
+        void OnPressed() => Clicked?.Invoke(GameId);
     }
 }

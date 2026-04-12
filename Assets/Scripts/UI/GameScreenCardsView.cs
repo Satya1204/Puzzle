@@ -2,27 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using PuzzleApp.Features.GameCatalog;
 
 namespace PuzzleApp.UI
 {
     /// <summary>
-    /// Data for one game tile; extend when you wire a real catalog.
-    /// </summary>
-    public struct GameCardDescriptor
-    {
-        public int Id;
-        public string Title;
-
-        public GameCardDescriptor(int id, string title = null)
-        {
-            Id = id;
-            Title = title;
-        }
-    }
-
-    /// <summary>
-    /// Lives on the Game Screen prefab: fills the Scroll View Content with Game Card prefabs in a 2-column grid.
-    /// Rows = ceil(cardCount / columnCount).
+    /// Pure view for the game catalog grid.
+    /// Controllers provide card data and react to click events.
     /// </summary>
     public class GameScreenCardsView : MonoBehaviour
     {
@@ -38,56 +24,68 @@ namespace PuzzleApp.UI
 
         void ApplyGridConstraint()
         {
-            if (_scrollContent == null) return;
+            if (_scrollContent == null)
+                return;
+
             var grid = _scrollContent.GetComponent<GridLayoutGroup>();
-            if (grid == null) return;
+            if (grid == null)
+                return;
+
             grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             grid.constraintCount = Mathf.Max(1, _columnCount);
         }
 
-        /// <summary>Spawn N cards (indices 0..count-1).</summary>
         public void SetCardCount(int count)
         {
             Clear();
-            if (_gameCardPrefab == null || _scrollContent == null) return;
+            if (_gameCardPrefab == null || _scrollContent == null)
+                return;
+
             count = Mathf.Max(0, count);
+
             for (int i = 0; i < count; i++)
-                SpawnOne(new GameCardDescriptor(i), i);
+                SpawnOne(new GameCardViewModel(i, $"Game {i + 1}"));
         }
 
-        /// <summary>Spawn one card per entry.</summary>
-        public void SetGames(IReadOnlyList<GameCardDescriptor> games)
+        public void SetGames(IReadOnlyList<GameCardViewModel> games)
         {
             Clear();
-            if (games == null || _gameCardPrefab == null || _scrollContent == null) return;
+            if (games == null || _gameCardPrefab == null || _scrollContent == null)
+                return;
+
             for (int i = 0; i < games.Count; i++)
-                SpawnOne(games[i], i);
+                SpawnOne(games[i]);
         }
 
         public void Clear()
         {
-            if (_scrollContent == null) return;
+            if (_scrollContent == null)
+                return;
+
             for (int i = _scrollContent.childCount - 1; i >= 0; i--)
             {
                 var tr = _scrollContent.GetChild(i);
                 if (tr.TryGetComponent<GameCardItem>(out var item))
                     item.Clicked -= OnItemClicked;
-                var go = tr.gameObject;
-                if (Application.isPlaying) Destroy(go);
-                else DestroyImmediate(go);
+
+                var child = tr.gameObject;
+                if (Application.isPlaying)
+                    Destroy(child);
+                else
+                    DestroyImmediate(child);
             }
         }
 
-        void SpawnOne(in GameCardDescriptor data, int index)
+        void SpawnOne(GameCardViewModel viewModel)
         {
             var go = Instantiate(_gameCardPrefab, _scrollContent);
-            if (go.TryGetComponent<GameCardItem>(out var item))
-            {
-                item.Bind(data, index);
-                item.Clicked += OnItemClicked;
-            }
+            if (!go.TryGetComponent<GameCardItem>(out var item))
+                return;
+
+            item.Bind(viewModel);
+            item.Clicked += OnItemClicked;
         }
 
-        void OnItemClicked(int index) => CardClicked?.Invoke(index);
+        void OnItemClicked(int gameId) => CardClicked?.Invoke(gameId);
     }
 }
