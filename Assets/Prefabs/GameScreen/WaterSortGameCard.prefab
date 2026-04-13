@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 894868124043995663}
   - component: {fileID: 3424406467346497109}
   - component: {fileID: 4155867731078916230}
-  - component: {fileID: 7391028475629183746}
   m_Layer: 23
-  m_Name: Game Cards
+  m_Name: WaterSortGameCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,16 +120,3 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7391028475629183746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6075215169746731458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1b2c3d4e5f6789012345678abcdef01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _button: {fileID: 4155867731078916230}

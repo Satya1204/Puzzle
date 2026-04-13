@@ -564,13 +564,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 585644056932107930, guid: 054f4fb42b7774ebba796ac722a13010, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 653695261028095106, guid: 054f4fb42b7774ebba796ac722a13010, type: 3}
       propertyPath: m_Name
       value: UILayer_HUD
-      objectReference: {fileID: 0}
-    - target: {fileID: 653695261028095106, guid: 054f4fb42b7774ebba796ac722a13010, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4571475955279530051, guid: 054f4fb42b7774ebba796ac722a13010, type: 3}
       propertyPath: m_LocalPosition.x

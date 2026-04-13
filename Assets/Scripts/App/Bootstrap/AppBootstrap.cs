@@ -3,6 +3,7 @@ using PuzzleApp.App.DI;
 using PuzzleApp.App.Modules;
 using PuzzleApp.App.Signals;
 using PuzzleApp.Features.GameCatalog;
+using PuzzleApp.Features.Lobby;
 using PuzzleApp.Features.Shell;
 using PuzzleApp.UI;
 
@@ -11,7 +12,13 @@ namespace PuzzleApp.App.Bootstrap
     [DefaultExecutionOrder(-1000)]
     public sealed class AppBootstrap : MonoBehaviour
     {
+        [Header("Shell")]
         [SerializeField] MainTab _initialTab = MainTab.Game;
+        [SerializeField] BottomBarView _bottomBarView;
+        [SerializeField] GameScreenCardsView _gameScreenView;
+
+        [Header("Lobbies")]
+        [SerializeField] LobbyEntry[] _lobbyEntries;
 
         IServiceRegistry _services;
         IAppModule[] _modules;
@@ -26,12 +33,9 @@ namespace PuzzleApp.App.Bootstrap
             if (_services != null)
                 return;
 
-            var bottomBarView = UnityEngine.Object.FindObjectOfType<BottomBarView>(true);
-            var gameScreenView = UnityEngine.Object.FindObjectOfType<GameScreenCardsView>(true);
-
-            if (bottomBarView == null || gameScreenView == null)
+            if (_bottomBarView == null || _gameScreenView == null)
             {
-                Debug.LogError("AppBootstrap could not find required shell views.");
+                Debug.LogError("AppBootstrap: assign required shell views in the inspector.");
                 return;
             }
 
@@ -40,8 +44,9 @@ namespace PuzzleApp.App.Bootstrap
 
             _modules = new IAppModule[]
             {
-                new ShellModule(bottomBarView, _initialTab),
-                new GameCatalogModule(gameScreenView),
+                new ShellModule(_bottomBarView, _initialTab),
+                new GameCatalogModule(_gameScreenView),
+                new LobbyModule(_lobbyEntries),
             };
 
             foreach (var module in _modules)

@@ -21,10 +21,11 @@ Lightweight in-project framework: **composition root**, **custom DI**, **typed s
 ## 2. Startup sequence
 
 1. **`AppBootstrap.Awake`** (on `UILayer_HUD` root, early execution order).
-2. **`FindObjectOfType`** for required views: `BottomBarView`, `GameScreenCardsView`.
-3. Create **`ServiceRegistry`**, register **`ISignalBus`** instance.
-4. For each **`IAppModule`**: **`Register(services)`** then **`Initialize(services)`**.
-5. Order today: **`ShellModule`** → **`GameCatalogModule`**.
+2. All view references are **`[SerializeField]`** — assigned in the inspector, no runtime search.
+3. Lobby entries use a **`LobbyEntry[]`** array: add a game lobby by adding an inspector entry (zero code changes).
+4. Create **`ServiceRegistry`**, register **`ISignalBus`** instance.
+5. For each **`IAppModule`**: **`Register(services)`** then **`Initialize(services)`**.
+6. Order today: **`ShellModule`** → **`GameCatalogModule`** → **`LobbyModule`**.
 
 ---
 
@@ -34,7 +35,7 @@ Lightweight in-project framework: **composition root**, **custom DI**, **typed s
 - **`RegisterSingleton<T>(Func<IServiceRegistry, T> factory)`** — lazy, one instance.
 - **`Resolve<T>()`** / **`TryResolve<T>()`**.
 
-MonoBehaviours are **not** auto-injected; they are found at bootstrap or assigned in prefabs, then passed into modules/controllers.
+MonoBehaviours are **not** auto-injected; they are assigned via `[SerializeField]` on `AppBootstrap` and passed into modules/controllers.
 
 ---
 
@@ -50,6 +51,7 @@ MonoBehaviours are **not** auto-injected; they are found at bootstrap or assigne
 | `MainTabSelectedSignal` | Bottom bar chose Home / Game / Shop |
 | `ActiveHudScreenChangedSignal` | HUD should show the screen for that tab |
 | `GameCardSelectedSignal` | User tapped a game card (by **game id**) |
+| `LobbyClosedSignal` | User left a game lobby (back button) |
 
 ---
 
@@ -58,8 +60,9 @@ MonoBehaviours are **not** auto-injected; they are found at bootstrap or assigne
 | Interface | Role |
 |-----------|------|
 | **`INavigationSubsystem`** | Current tab; reacts to `MainTabSelectedSignal`; publishes `ActiveHudScreenChangedSignal` |
-| **`IHudScreenSubsystem`** | Registers `GameObject` roots per tab; shows/hides on `ActiveHudScreenChangedSignal` |
+| **`IHudScreenSubsystem`** | Registers `GameObject` roots per tab; shows/hides on `ActiveHudScreenChangedSignal`; `HideAll()` for lobby overlay |
 | **`IGameCatalogSubsystem`** | Returns catalog data (`GameCardViewModel` list) |
+| **`ILobbySubsystem`** | Maps `gameId -> lobby root`; reacts to `GameCardSelectedSignal` / `LobbyClosedSignal`; toggles lobby vs HUD |
 
 ---
 
@@ -74,6 +77,7 @@ Each module implements **`IAppModule`**:
 |--------|-----------|--------|
 | **`ShellModule`** | `NavigationSubsystem`, `HudScreenSubsystem`, `BottomBarController` | `BottomBarController` publishes tab signals |
 | **`GameCatalogModule`** | `GameCatalogSubsystem`, `GameScreenController` | Registers **Game** HUD root; republishes current tab after registration |
+| **`LobbyModule`** | `LobbySubsystem`, `GameLobbyController` per entry | Data-driven via `LobbyEntry[]`; adding a game = adding an inspector entry |
 
 ---
 
@@ -115,31 +119,68 @@ sequenceDiagram
 
 ---
 
-## 9. View rules
+## 9. Runtime flow (lobby navigation)
 
-- **`BottomBarView`**, **`GameScreenCardsView`**, **`GameCardItem`**: events and layout only.
+```mermaid
+sequenceDiagram
+    participant Item as GameCardItem
+    participant GCtrl as GameScreenController
+    participant Bus as SignalBus
+    participant Lobby as LobbySubsystem
+    participant Hud as HudScreenSubsystem
+    participant LView as GameLobbyView
+    participant LCtrl as GameLobbyController
+    participant Nav as NavigationSubsystem
+
+    Item->>GCtrl: CardClicked(gameId=2)
+    GCtrl->>Bus: Publish(GameCardSelectedSignal)
+    Bus->>Lobby: OnCardSelected
+    Lobby->>Hud: HideAll()
+    Lobby->>Lobby: Activate matching lobby root
+
+    LView->>LCtrl: BackClicked
+    LCtrl->>Bus: Publish(LobbyClosedSignal)
+    Bus->>Lobby: OnLobbyClosed
+    Lobby->>Lobby: Hide all lobbies
+    Lobby->>Nav: PublishCurrent()
+    Nav->>Bus: Publish(ActiveHudScreenChangedSignal)
+    Bus->>Hud: Restore Game tab
+```
+
+---
+
+## 10. View rules
+
+- **`BottomBarView`**, **`GameScreenCardsView`**, **`GameCardItem`**, **`GameLobbyView`** (and subclasses): events and layout only.
 - **Controllers** subscribe to views and publish/consume signals.
 - **Subsystems** own cross-feature state and policies.
 
 ---
 
-## 10. Extension checklist
+## 11. Extension checklist
 
 - [ ] Add **Home** / **Shop** screens: new prefabs + register in **`IHudScreenSubsystem`** from new modules.
-- [ ] Subscribe to **`GameCardSelectedSignal`** in a **lobby** or **scene loader** controller.
+- [x] Subscribe to **`GameCardSelectedSignal`** in **`LobbySubsystem`** to open game lobbies.
+- [ ] Add lobby prefabs for remaining games (Jigsaw, Find It) — add `LobbyEntry` in inspector.
+- [ ] Wire **Play** callback via `GameLobbyController(view, bus, onPlay)` to load gameplay scenes.
 - [ ] Replace static **`GameCatalogSubsystem`** data with ScriptableObjects or remote config.
-- [ ] Optional: replace `FindObjectOfType` in **`AppBootstrap`** with serialized references on a scene “App” object.
+- [x] Replace `FindObjectOfType` in **`AppBootstrap`** with `[SerializeField]` references.
 
 ---
 
-## 11. Key files
+## 12. Key files
 
 | File | Purpose |
 |------|---------|
-| `Assets/Scripts/App/Bootstrap/AppBootstrap.cs` | Composition root |
+| `Assets/Scripts/App/Bootstrap/AppBootstrap.cs` | Composition root (serialized refs) |
 | `Assets/Scripts/App/DI/ServiceRegistry.cs` | DI container |
 | `Assets/Scripts/App/Signals/SignalBus.cs` | Signal bus |
 | `Assets/Scripts/App/Signals/AppSignals.cs` | Signal payload types |
+| `Assets/Scripts/App/Subsystems/LobbySubsystem.cs` | Lobby routing subsystem |
+| `Assets/Scripts/UI/GameLobbyView.cs` | Base lobby view (Play / Back) |
 | `Assets/Scripts/Features/Shell/ShellModule.cs` | Shell feature |
 | `Assets/Scripts/Features/GameCatalog/*` | Game list feature |
+| `Assets/Scripts/Features/Lobby/LobbyModule.cs` | Lobby feature module (data-driven) |
+| `Assets/Scripts/Features/Lobby/LobbyEntry.cs` | Serializable gameId-to-view mapping |
+| `Assets/Scripts/Features/Lobby/GameLobbyController.cs` | Generic lobby controller |
 | `Assets/Prefabs/UILayer_HUD.prefab` | Hosts `AppBootstrap` |

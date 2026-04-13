@@ -31,4 +31,6 @@ namespace PuzzleApp.App.Signals
 
         public int GameId { get; }
     }
+
+    public readonly struct LobbyClosedSignal { }
 }

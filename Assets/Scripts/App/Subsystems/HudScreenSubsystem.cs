@@ -10,6 +10,7 @@ namespace PuzzleApp.App.Subsystems
     {
         void RegisterScreen(MainTab tab, GameObject screenRoot);
         void Show(MainTab tab);
+        void HideAll();
     }
 
     public sealed class HudScreenSubsystem : IHudScreenSubsystem, IDisposable
@@ -38,6 +39,15 @@ namespace PuzzleApp.App.Subsystems
                     continue;
 
                 pair.Value.SetActive(pair.Key == tab);
+            }
+        }
+
+        public void HideAll()
+        {
+            foreach (var pair in _screenRoots)
+            {
+                if (pair.Value != null)
+                    pair.Value.SetActive(false);
             }
         }
 
