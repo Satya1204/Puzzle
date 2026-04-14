@@ -8,15 +8,20 @@ namespace PuzzleApp.UI
 {
     /// <summary>
     /// Pure view for the game catalog grid.
-    /// Controllers provide card data and react to click events.
+    /// Game list and per-game catalog prefabs are configured here in the inspector.
+    /// Controllers call <see cref="SetGames"/> with view models built from the same definitions.
     /// </summary>
     public class GameScreenCardsView : MonoBehaviour
     {
         [SerializeField] RectTransform _scrollContent;
-        [SerializeField] GameObject _gameCardPrefab;
+        [SerializeField] GameDefinition[] _gameDefinitions;
         [SerializeField] [Min(1)] int _columnCount = 2;
 
         public event Action<int> CardClicked;
+
+        /// <summary>Definitions edited on this view; shared with catalog subsystem and lobby module.</summary>
+        public IReadOnlyList<GameDefinition> GetGameDefinitions() =>
+            _gameDefinitions != null ? _gameDefinitions : Array.Empty<GameDefinition>();
 
         void Awake() => ApplyGridConstraint();
 
@@ -35,22 +40,10 @@ namespace PuzzleApp.UI
             grid.constraintCount = Mathf.Max(1, _columnCount);
         }
 
-        public void SetCardCount(int count)
-        {
-            Clear();
-            if (_gameCardPrefab == null || _scrollContent == null)
-                return;
-
-            count = Mathf.Max(0, count);
-
-            for (int i = 0; i < count; i++)
-                SpawnOne(new GameCardViewModel(i, $"Game {i + 1}"));
-        }
-
         public void SetGames(IReadOnlyList<GameCardViewModel> games)
         {
             Clear();
-            if (games == null || _gameCardPrefab == null || _scrollContent == null)
+            if (games == null || _scrollContent == null)
                 return;
 
             for (int i = 0; i < games.Count; i++)
@@ -78,7 +71,13 @@ namespace PuzzleApp.UI
 
         void SpawnOne(GameCardViewModel viewModel)
         {
-            var go = Instantiate(_gameCardPrefab, _scrollContent);
+            if (viewModel.CatalogCardPrefab == null)
+            {
+                Debug.LogWarning($"GameScreenCardsView: no catalogCardPrefab for game id {viewModel.Id} ('{viewModel.Title}').");
+                return;
+            }
+
+            var go = Instantiate(viewModel.CatalogCardPrefab, _scrollContent);
             if (!go.TryGetComponent<GameCardItem>(out var item))
                 return;
 

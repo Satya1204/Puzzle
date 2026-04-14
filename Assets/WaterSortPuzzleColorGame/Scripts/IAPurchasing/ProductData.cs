@@ -1,3 +1,4 @@
+#undef UNITY_IAP
 using UnityEngine;
 #if UNITY_IAP
 using UnityEngine.Purchasing;

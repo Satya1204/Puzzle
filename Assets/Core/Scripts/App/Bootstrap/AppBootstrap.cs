@@ -3,8 +3,10 @@ using PuzzleApp.App.DI;
 using PuzzleApp.App.Modules;
 using PuzzleApp.App.Signals;
 using PuzzleApp.Features.GameCatalog;
+using PuzzleApp.Features.Home;
 using PuzzleApp.Features.Lobby;
 using PuzzleApp.Features.Shell;
+using PuzzleApp.Features.Shop;
 using PuzzleApp.UI;
 
 namespace PuzzleApp.App.Bootstrap
@@ -15,10 +17,9 @@ namespace PuzzleApp.App.Bootstrap
         [Header("Shell")]
         [SerializeField] MainTab _initialTab = MainTab.Game;
         [SerializeField] BottomBarView _bottomBarView;
-        [SerializeField] GameScreenCardsView _gameScreenView;
-
-        [Header("Lobbies")]
-        [SerializeField] LobbyEntry[] _lobbyEntries;
+        [SerializeField] GameScreenController _gameScreenController;
+        [SerializeField] HomeScreenController _homeScreenController;
+        [SerializeField] ShopScreenController _shopScreenController;
 
         IServiceRegistry _services;
         IAppModule[] _modules;
@@ -33,7 +34,7 @@ namespace PuzzleApp.App.Bootstrap
             if (_services != null)
                 return;
 
-            if (_bottomBarView == null || _gameScreenView == null)
+            if (_bottomBarView == null || _gameScreenController == null)
             {
                 Debug.LogError("AppBootstrap: assign required shell views in the inspector.");
                 return;
@@ -45,8 +46,10 @@ namespace PuzzleApp.App.Bootstrap
             _modules = new IAppModule[]
             {
                 new ShellModule(_bottomBarView, _initialTab),
-                new GameCatalogModule(_gameScreenView),
-                new LobbyModule(_lobbyEntries),
+                new LobbyModule(),
+                new HomeScreenModule(_homeScreenController),
+                new GameCatalogModule(_gameScreenController),
+                new ShopScreenModule(_shopScreenController),
             };
 
             foreach (var module in _modules)

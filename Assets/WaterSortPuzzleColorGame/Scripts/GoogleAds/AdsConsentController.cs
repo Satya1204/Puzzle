@@ -1,3 +1,6 @@
+#undef ADMOB
+#undef USE_UNITYADS
+#undef USE_IRONSOURCE
 #if USE_IRONSOURCE
 using GoogleMobileAds.Mediation.IronSource.Api;
 #endif

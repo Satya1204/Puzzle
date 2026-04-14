@@ -8,27 +8,26 @@ namespace PuzzleApp.Features.GameCatalog
 {
     public sealed class GameCatalogModule : IAppModule
     {
-        readonly GameScreenCardsView _gameScreenView;
+        readonly GameScreenController _gameScreenController;
 
-        public GameCatalogModule(GameScreenCardsView gameScreenView)
+        public GameCatalogModule(GameScreenController gameScreenController)
         {
-            _gameScreenView = gameScreenView;
+            _gameScreenController = gameScreenController;
         }
 
         public void Register(IServiceRegistry services)
         {
-            services.RegisterSingleton<IGameCatalogSubsystem>(_ => new GameCatalogSubsystem());
-            services.RegisterSingleton<GameScreenController>(registry =>
-                new GameScreenController(
-                    _gameScreenView,
-                    registry.Resolve<IGameCatalogSubsystem>(),
-                    registry.Resolve<ISignalBus>()));
+            services.RegisterSingleton<IGameCatalogSubsystem>(_ =>
+                new GameCatalogSubsystem(_gameScreenController.GetGameDefinitions()));
         }
 
         public void Initialize(IServiceRegistry services)
         {
-            services.Resolve<IHudScreenSubsystem>().RegisterScreen(MainTab.Game, _gameScreenView.gameObject);
-            services.Resolve<GameScreenController>();
+            services.Resolve<IHudScreenSubsystem>().RegisterScreen(MainTab.Game, _gameScreenController.ScreenRoot);
+            _gameScreenController.Initialize(
+                services.Resolve<IGameCatalogSubsystem>(),
+                services.Resolve<ILobbySubsystem>(),
+                services.Resolve<ISignalBus>());
             services.Resolve<INavigationSubsystem>().PublishCurrent();
         }
     }

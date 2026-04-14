@@ -18,6 +18,7 @@ namespace PuzzleApp.App.Controllers
 
         void OnTabSelected(MainTab tab)
         {
+            UnityEngine.Debug.LogError("tab " + tab.ToString());
             _signalBus.Publish(new MainTabSelectedSignal(tab));
         }
 

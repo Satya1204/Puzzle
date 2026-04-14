@@ -17,7 +17,6 @@ namespace PuzzleApp.App.Subsystems
     {
         readonly Dictionary<int, GameObject> _lobbyRoots = new();
         readonly ISignalBus _signalBus;
-        readonly IHudScreenSubsystem _hudScreen;
         readonly INavigationSubsystem _navigation;
         readonly IDisposable _cardSelectedSub;
         readonly IDisposable _lobbyClosedSub;
@@ -28,11 +27,9 @@ namespace PuzzleApp.App.Subsystems
 
         public LobbySubsystem(
             ISignalBus signalBus,
-            IHudScreenSubsystem hudScreen,
             INavigationSubsystem navigation)
         {
             _signalBus = signalBus;
-            _hudScreen = hudScreen;
             _navigation = navigation;
 
             _cardSelectedSub = signalBus.Subscribe<GameCardSelectedSignal>(OnCardSelected);
@@ -57,7 +54,6 @@ namespace PuzzleApp.App.Subsystems
             }
 
             HideAllLobbies();
-            _hudScreen.HideAll();
             root.SetActive(true);
             _activeLobbyId = gameId;
         }

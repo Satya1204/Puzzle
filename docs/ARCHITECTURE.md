@@ -22,7 +22,7 @@ Lightweight in-project framework: **composition root**, **custom DI**, **typed s
 
 1. **`AppBootstrap.Awake`** (on `UILayer_HUD` root, early execution order).
 2. All view references are **`[SerializeField]`** — assigned in the inspector, no runtime search.
-3. Lobby entries use a **`LobbyEntry[]`** array: add a game lobby by adding an inspector entry (zero code changes).
+3. Game entries use a **`GameDefinition[]`** on **`GameScreenCardsView`**: each entry carries game data, a per-game **`catalogCardPrefab`** for the grid, and a **`lobbyPrefab`**. **`AppBootstrap`** only wires shell views and lobby parent.
 4. Create **`ServiceRegistry`**, register **`ISignalBus`** instance.
 5. For each **`IAppModule`**: **`Register(services)`** then **`Initialize(services)`**.
 6. Order today: **`ShellModule`** → **`GameCatalogModule`** → **`LobbyModule`**.
@@ -77,7 +77,7 @@ Each module implements **`IAppModule`**:
 |--------|-----------|--------|
 | **`ShellModule`** | `NavigationSubsystem`, `HudScreenSubsystem`, `BottomBarController` | `BottomBarController` publishes tab signals |
 | **`GameCatalogModule`** | `GameCatalogSubsystem`, `GameScreenController` | Registers **Game** HUD root; republishes current tab after registration |
-| **`LobbyModule`** | `LobbySubsystem`, `GameLobbyController` per entry | Data-driven via `LobbyEntry[]`; adding a game = adding an inspector entry |
+| **`LobbyModule`** | `LobbySubsystem`, `GameLobbyController` per entry | Reads `GameDefinition[]` from `GameScreenCardsView`; instantiates lobby prefabs at runtime |
 
 ---
 
@@ -161,9 +161,8 @@ sequenceDiagram
 
 - [ ] Add **Home** / **Shop** screens: new prefabs + register in **`IHudScreenSubsystem`** from new modules.
 - [x] Subscribe to **`GameCardSelectedSignal`** in **`LobbySubsystem`** to open game lobbies.
-- [ ] Add lobby prefabs for remaining games (Jigsaw, Find It) — add `LobbyEntry` in inspector.
+- [ ] Add lobby prefabs for remaining games (Jigsaw, Find It) — add `GameDefinition` entries on `GameScreenCardsView` in the inspector.
 - [ ] Wire **Play** callback via `GameLobbyController(view, bus, onPlay)` to load gameplay scenes.
-- [ ] Replace static **`GameCatalogSubsystem`** data with ScriptableObjects or remote config.
 - [x] Replace `FindObjectOfType` in **`AppBootstrap`** with `[SerializeField]` references.
 
 ---
@@ -181,6 +180,6 @@ sequenceDiagram
 | `Assets/Scripts/Features/Shell/ShellModule.cs` | Shell feature |
 | `Assets/Scripts/Features/GameCatalog/*` | Game list feature |
 | `Assets/Scripts/Features/Lobby/LobbyModule.cs` | Lobby feature module (data-driven) |
-| `Assets/Scripts/Features/Lobby/LobbyEntry.cs` | Serializable gameId-to-view mapping |
+| `Assets/Core/Scripts/Features/GameCatalog/GameDefinition.cs` | Serializable game data + lobby prefab reference |
 | `Assets/Scripts/Features/Lobby/GameLobbyController.cs` | Generic lobby controller |
 | `Assets/Prefabs/UILayer_HUD.prefab` | Hosts `AppBootstrap` |

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4155867731078916230}
   - component: {fileID: 3574703182304204806}
   m_Layer: 23
-  m_Name: MatchingPairLobbyCard
+  m_Name: MatchingPairCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 4155867731078916230}
+  _iconImage: {fileID: 3424406467346497109}
 --- !u!1 &9040360797411995535
 GameObject:
   m_ObjectHideFlags: 0

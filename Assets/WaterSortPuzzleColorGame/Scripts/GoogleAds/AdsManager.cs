@@ -1,3 +1,4 @@
+#undef ADMOB
 #if ADMOB
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Ump.Api;

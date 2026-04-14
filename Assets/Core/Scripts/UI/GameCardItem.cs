@@ -11,10 +11,11 @@ namespace PuzzleApp.UI
     public class GameCardItem : MonoBehaviour
     {
         [SerializeField] Button _button;
+        [SerializeField] Image _iconImage;
 
         public event Action<int> Clicked;
 
-        public int GameId { get; private set; }
+        public int GameId { get;  set; }
 
         void Awake()
         {
@@ -41,7 +42,11 @@ namespace PuzzleApp.UI
             _button.onClick.RemoveListener(OnPressed);
             _button.onClick.AddListener(OnPressed);
 
-            // Extend here: bind title, icon, lock state, or badge views.
+            if (_iconImage != null)
+            {
+                _iconImage.sprite = viewModel.Icon;
+                _iconImage.enabled = viewModel.Icon != null;
+            }
         }
 
         void OnPressed() => Clicked?.Invoke(GameId);
