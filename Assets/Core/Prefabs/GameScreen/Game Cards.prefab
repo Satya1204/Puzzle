@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3424406467346497109}
   - component: {fileID: 4155867731078916230}
   - component: {fileID: 7391028475629183746}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Game Cards
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,3 +134,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 4155867731078916230}
+  _iconImage: {fileID: 0}

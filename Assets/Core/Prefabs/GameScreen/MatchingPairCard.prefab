@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3424406467346497109}
   - component: {fileID: 4155867731078916230}
   - component: {fileID: 3574703182304204806}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: MatchingPairCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 4572840002139344469}
   - component: {fileID: 6165870464128935982}
   - component: {fileID: 5292043154860652200}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

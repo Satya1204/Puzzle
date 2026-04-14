@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3296537321287278046}
   - component: {fileID: 7881838001132604671}
   - component: {fileID: 3096755702039871947}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: HUDCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ Camera:
   m_Depth: 5
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 8388608
+    m_Bits: 8389120
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -139,7 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4571475955279530051}
   - component: {fileID: 1266142293725029183}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: UILayer_HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 3229157648444386954}
   - component: {fileID: 5561486667654036382}
   - component: {fileID: 3334484670310343768}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 2258054601368434852}
   - component: {fileID: 471835421510857817}
   - component: {fileID: 5558800047234897768}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,7 +369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6723141432072206648}
   - component: {fileID: 6405674972225472814}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +413,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7965027409020737468}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,6 +444,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1431063252514605386}
     m_Modifications:
+    - target: {fileID: 1932791881356375384, guid: fef333b7fb7f74009b653f433e22cd81, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4302374583124548529, guid: fef333b7fb7f74009b653f433e22cd81, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -524,9 +528,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5246626299707846744, guid: fef333b7fb7f74009b653f433e22cd81, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6811964933404952246, guid: fef333b7fb7f74009b653f433e22cd81, type: 3}
       propertyPath: m_Name
       value: Home Screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811964933404952246, guid: fef333b7fb7f74009b653f433e22cd81, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -637,6 +649,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2357852846737266620, guid: cf0952d05fba84602b3d29754d34cabf, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2467424912445417710, guid: cf0952d05fba84602b3d29754d34cabf, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 5525439608248739886, guid: cf0952d05fba84602b3d29754d34cabf, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -644,6 +664,10 @@ PrefabInstance:
     - target: {fileID: 5792964267069586212, guid: cf0952d05fba84602b3d29754d34cabf, type: 3}
       propertyPath: m_Name
       value: Game Screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792964267069586212, guid: cf0952d05fba84602b3d29754d34cabf, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -754,9 +778,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2461829922910530583, guid: 527ad28e1f57245a69ae99d1e75c063f, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3673851773345988976, guid: 527ad28e1f57245a69ae99d1e75c063f, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 8400231506625474231, guid: 527ad28e1f57245a69ae99d1e75c063f, type: 3}
       propertyPath: m_Name
       value: Shop Screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 8400231506625474231, guid: 527ad28e1f57245a69ae99d1e75c063f, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

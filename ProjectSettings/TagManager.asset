@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 3
+  serializedVersion: 2
   tags:
   - ActiveTheme
   - IgnoreBlockCancel
@@ -14,9 +14,9 @@ TagManager:
   - Water
   - UI
   - ThemeImage
-  - 
-  - 
-  - 
+  - UI/BottomLayer
+  - UI/TopLayer
+  - UI/HUD
   - 
   - 
   - 
@@ -43,5 +43,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  m_RenderingLayers:
-  - Default
+  - name: UI/BottomLayer
+    uniqueID: 536125801
+    locked: 0

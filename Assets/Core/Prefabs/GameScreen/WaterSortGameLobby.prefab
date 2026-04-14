@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5525439608248739886}
   - component: {fileID: 7410667528178493150}
   - component: {fileID: 8930675293148173613}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 2460669055146502397}
   - component: {fileID: 4083191556162681451}
   - component: {fileID: 334884735962877236}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 249086551716394855}
   - component: {fileID: 7360929050652660171}
   - component: {fileID: 6714774964080761524}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1667830264783779922}
   - component: {fileID: 6613494277732949149}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: WaterSortGameLobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 4859309373245366392}
   - component: {fileID: 2752941693132626246}
   - component: {fileID: 603440833421923442}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

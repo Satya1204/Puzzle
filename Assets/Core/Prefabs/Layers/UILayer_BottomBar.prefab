@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3296537321287278046}
   - component: {fileID: 7881838001132604671}
   - component: {fileID: 3096755702039871947}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: BottomCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ Camera:
   m_Depth: 5
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2097152
+    m_Bits: 2097280
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -139,7 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4571475955279530051}
   - component: {fileID: 6248790742917492141}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: UILayer_BottomBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 1855382848248927574}
   - component: {fileID: 7591620620439968856}
   - component: {fileID: 8234567890123456792}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: BottomBarView Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 554336173660120448}
   - component: {fileID: 8242484919103088817}
   - component: {fileID: 663175044064949171}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +381,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2431719164829983901}
   - component: {fileID: 1990270461280645408}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,7 +446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6723141432072206648}
   - component: {fileID: 6405674972225472814}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 7320223896557108834}
   - component: {fileID: 4961422462826628903}
   - component: {fileID: 2696663540166601810}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: GameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 8994594220820797284}
   - component: {fileID: 1205650724508889780}
   - component: {fileID: 5801593668100959984}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: HomeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -733,7 +733,7 @@ GameObject:
   - component: {fileID: 2111814575542608375}
   - component: {fileID: 4688844269124737729}
   - component: {fileID: 4938633079028201441}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: ShopButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -850,7 +850,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7965027409020737468}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}

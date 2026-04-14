@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3296537321287278046}
   - component: {fileID: 7881838001132604671}
   - component: {fileID: 3096755702039871947}
-  m_Layer: 20
+  m_Layer: 8
   m_Name: TopCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ Camera:
   m_Depth: 6
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1048576
+    m_Bits: 1048832
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -138,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4571475955279530051}
-  m_Layer: 20
+  m_Layer: 8
   m_Name: UILayer_TopBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6723141432072206648}
   - component: {fileID: 6405674972225472814}
-  m_Layer: 20
+  m_Layer: 8
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7965027409020737468}
-  m_Layer: 20
+  m_Layer: 8
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}

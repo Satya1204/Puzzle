@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5859087355017191118}
   - component: {fileID: 3468638504654934183}
   - component: {fileID: 6687820164500674127}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 2031155502131772784}
   - component: {fileID: 7779643457775194425}
   - component: {fileID: 7168706972909164375}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1592482165314004414}
   - component: {fileID: 8160334456880393076}
-  m_Layer: 23
+  m_Layer: 9
   m_Name: Shop Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
