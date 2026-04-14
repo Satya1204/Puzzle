@@ -454,6 +454,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1076544556 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6248790742917492141, guid: b0ca73a7032ff4c069d2a828f86287fa, type: 3}
+  m_PrefabInstance: {fileID: 1294972585}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b8c7d6e5f443218877665544332211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1107702078
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,6 +579,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UILayer_HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 1266142293725029183, guid: 054f4fb42b7774ebba796ac722a13010, type: 3}
+      propertyPath: _bottomBarView
+      value: 
+      objectReference: {fileID: 1076544556}
     - target: {fileID: 4571475955279530051, guid: 054f4fb42b7774ebba796ac722a13010, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
