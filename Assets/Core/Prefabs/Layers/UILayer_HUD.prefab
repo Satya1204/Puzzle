@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialTab: 1
-  _bottomBarView: {fileID: 6248790742917492141, guid: b0ca73a7032ff4c069d2a828f86287fa, type: 3}
+  _bottomBarView: {fileID: 0}
   _gameScreenController: {fileID: 8968739083070132972}
   _homeScreenController: {fileID: 7549860070560459062}
   _shopScreenController: {fileID: 544851136522434774}

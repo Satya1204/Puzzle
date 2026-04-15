@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using PuzzleApp.App.Signals;
 using PuzzleApp.App.Subsystems;
-using PuzzleApp.Features.Lobby;
 using PuzzleApp.UI;
 
 namespace PuzzleApp.Features.GameCatalog
 {
     public sealed class GameScreenController : MonoBehaviour
     {
-        [SerializeField] GameObject _gameLobbyPrefab;
-        [SerializeField] Transform _cardLobbyParent;
-        [SerializeField] Transform _gameLobbiesParent;
+        [SerializeField] GameObject _gameCatalogPrefab;
+        [SerializeField] Transform _gameCatalogParent;
+        [SerializeField] Transform _gameControllersParent;
 
         readonly Dictionary<int, GameDefinition> _definitionsById = new();
-        readonly Dictionary<int, GameLobbyController> _lobbyControllers = new();
+        readonly Dictionary<int, IGameController> _gameControllers = new();
+        readonly Dictionary<int, GameObject> _gameInstancesById = new();
 
-        GameObject _gameLobbyInstance;
+        GameObject _gameCatalogInstance;
         GameScreenCardsView _cardsView;
-        ILobbySubsystem _lobbySubsystem;
+        ILobbySubsystem _screenVisibilitySubsystem;
         ISignalBus _signalBus;
-        IDisposable _lobbyClosedSub;
+        IDisposable _gameClosedSub;
+        int _activeGameId = -1;
         bool _isInitialized;
 
         public GameObject ScreenRoot => gameObject;
@@ -31,29 +32,29 @@ namespace PuzzleApp.Features.GameCatalog
 
         public void Initialize(
             IGameCatalogSubsystem gameCatalogSubsystem,
-            ILobbySubsystem lobbySubsystem,
+            ILobbySubsystem screenVisibilitySubsystem,
             ISignalBus signalBus)
         {
             if (_isInitialized)
                 return;
 
-            EnsureGameLobbyInstantiated();
+            EnsureGameCatalogInstantiated();
             if (_cardsView == null)
             {
-                Debug.LogError("GameScreenController: GameLobby prefab must include GameScreenCardsView.");
+                Debug.LogError("GameScreenController: catalog prefab must include GameScreenCardsView.");
                 return;
             }
 
-            if (lobbySubsystem == null || signalBus == null || gameCatalogSubsystem == null)
+            if (screenVisibilitySubsystem == null || signalBus == null || gameCatalogSubsystem == null)
             {
                 Debug.LogError("GameScreenController: missing startup dependencies.");
                 return;
             }
 
             CacheDefinitions(gameCatalogSubsystem.GetDefinitions());
-            _lobbySubsystem = lobbySubsystem;
+            _screenVisibilitySubsystem = screenVisibilitySubsystem;
             _signalBus = signalBus;
-            _lobbyClosedSub = _signalBus.Subscribe<LobbyClosedSignal>(OnLobbyClosed);
+            _gameClosedSub = _signalBus.Subscribe<LobbyClosedSignal>(OnGameClosed);
             _cardsView.SetGames(gameCatalogSubsystem.GetGames());
             _cardsView.CardClicked += OnCardClicked;
             _isInitialized = true;
@@ -73,20 +74,20 @@ namespace PuzzleApp.Features.GameCatalog
             }
         }
 
-        void EnsureGameLobbyInstantiated()
+        void EnsureGameCatalogInstantiated()
         {
-            if (_gameLobbyInstance != null)
+            if (_gameCatalogInstance != null)
                 return;
 
-            if (_gameLobbyPrefab == null)
+            if (_gameCatalogPrefab == null)
             {
-                Debug.LogError("GameScreenController: assign GameLobby prefab in the inspector.");
+                Debug.LogError("GameScreenController: assign game catalog prefab in the inspector.");
                 return;
             }
 
-            var parent = _cardLobbyParent != null ? _cardLobbyParent : transform;
-            _gameLobbyInstance = Instantiate(_gameLobbyPrefab, parent);
-            _cardsView = _gameLobbyInstance.GetComponentInChildren<GameScreenCardsView>(true);
+            var parent = _gameCatalogParent != null ? _gameCatalogParent : transform;
+            _gameCatalogInstance = Instantiate(_gameCatalogPrefab, parent);
+            _cardsView = _gameCatalogInstance.GetComponentInChildren<GameScreenCardsView>(true);
         }
 
         GameScreenCardsView ResolveCardsViewSource()
@@ -94,15 +95,15 @@ namespace PuzzleApp.Features.GameCatalog
             if (_cardsView != null)
                 return _cardsView;
 
-            if (_gameLobbyPrefab == null)
+            if (_gameCatalogPrefab == null)
                 return null;
 
-            return _gameLobbyPrefab.GetComponentInChildren<GameScreenCardsView>(true);
+            return _gameCatalogPrefab.GetComponentInChildren<GameScreenCardsView>(true);
         }
 
-        bool EnsureLobbyInstantiated(int gameId)
+        bool EnsureGameInstantiated(int gameId)
         {
-            if (_lobbyControllers.ContainsKey(gameId))
+            if (_gameControllers.ContainsKey(gameId))
                 return true;
 
             if (!_definitionsById.TryGetValue(gameId, out var definition))
@@ -111,30 +112,51 @@ namespace PuzzleApp.Features.GameCatalog
                 return false;
             }
 
-            if (definition.lobbyPrefab == null)
+            var gameRootPrefab = definition.lobbyPrefab;
+            if (gameRootPrefab == null)
             {
-                Debug.LogWarning($"GameScreenController: no lobby prefab assigned for '{definition.title}' (id {gameId}).");
+                Debug.LogWarning($"GameScreenController: no game prefab assigned for '{definition.title}' (id {gameId}).");
                 return false;
             }
 
-            var parent = _gameLobbiesParent != null
-                ? _gameLobbiesParent
-                : (_gameLobbyInstance != null ? _gameLobbyInstance.transform : transform);
+            var parent = _gameControllersParent != null
+                ? _gameControllersParent
+                : (_gameCatalogInstance != null ? _gameCatalogInstance.transform : transform);
 
-            var instance = Instantiate(definition.lobbyPrefab, parent);
-            var view = instance.GetComponent<GameLobbyView>();
-            if (view == null)
-                view = instance.GetComponentInChildren<GameLobbyView>(true);
+            var instance = Instantiate(gameRootPrefab, parent);
 
-            if (view == null)
+            var controller = instance.GetComponent<IGameController>();
+            if (controller == null)
+                controller = instance.GetComponentInChildren<IGameController>(true);
+
+            if (controller == null)
             {
-                Debug.LogWarning($"GameScreenController: lobby prefab for '{definition.title}' has no GameLobbyView.");
-                Destroy(instance);
-                return false;
+                var view = instance.GetComponent<GameLobbyView>();
+                if (view == null)
+                    view = instance.GetComponentInChildren<GameLobbyView>(true);
+
+                if (view != null)
+                {
+                    var bridge = instance.AddComponent<GameLobbyBridgeController>();
+                    bridge.Initialize(view);
+                    controller = bridge;
+                    Debug.LogWarning(
+                        $"GameScreenController: '{definition.title}' prefab has no IGameController; using GameLobbyBridgeController fallback. " +
+                        "Assign an explicit XGameController prefab in GameDefinition for the intended architecture.");
+                }
+                else
+                {
+                    Debug.LogWarning(
+                        $"GameScreenController: game prefab for '{definition.title}' has neither IGameController nor GameLobbyView.");
+                    Destroy(instance);
+                    return false;
+                }
             }
 
-            _lobbySubsystem.RegisterLobby(definition.gameId, instance);
-            _lobbyControllers[definition.gameId] = new GameLobbyController(view, _signalBus);
+            controller.CloseRequested += OnGameCloseRequested;
+            _screenVisibilitySubsystem.RegisterLobby(definition.gameId, instance);
+            _gameControllers[definition.gameId] = controller;
+            _gameInstancesById[definition.gameId] = instance;
             return true;
         }
 
@@ -143,16 +165,24 @@ namespace PuzzleApp.Features.GameCatalog
             if (_cardsView != null)
                 _cardsView.CardClicked -= OnCardClicked;
 
-            _lobbyClosedSub?.Dispose();
-            _lobbyClosedSub = null;
+            _gameClosedSub?.Dispose();
+            _gameClosedSub = null;
 
-            foreach (var controller in _lobbyControllers.Values)
-                controller.Dispose();
+            foreach (var controller in _gameControllers.Values)
+                controller.CloseRequested -= OnGameCloseRequested;
+
+            foreach (var instance in _gameInstancesById.Values)
+            {
+                if (instance != null)
+                    Destroy(instance);
+            }
 
             _definitionsById.Clear();
-            _lobbyControllers.Clear();
-            _lobbySubsystem = null;
+            _gameControllers.Clear();
+            _gameInstancesById.Clear();
+            _screenVisibilitySubsystem = null;
             _signalBus = null;
+            _activeGameId = -1;
             _isInitialized = false;
         }
 
@@ -161,19 +191,45 @@ namespace PuzzleApp.Features.GameCatalog
             if (_signalBus == null)
                 return;
 
-            if (EnsureLobbyInstantiated(gameId))
+            if (EnsureGameInstantiated(gameId))
             {
-                if (_cardLobbyParent != null)
-                    _cardLobbyParent.gameObject.SetActive(false);
+                if (_gameCatalogParent != null)
+                    _gameCatalogParent.gameObject.SetActive(false);
 
+                _activeGameId = gameId;
                 _signalBus.Publish(new GameCardSelectedSignal(gameId));
             }
         }
 
-        void OnLobbyClosed(LobbyClosedSignal signal)
+        void OnGameCloseRequested() => _signalBus?.Publish(new LobbyClosedSignal());
+
+        void OnGameClosed(LobbyClosedSignal signal)
         {
-            if (_cardLobbyParent != null)
-                _cardLobbyParent.gameObject.SetActive(true);
+            DestroyActiveGameController();
+
+            if (_gameCatalogParent != null)
+                _gameCatalogParent.gameObject.SetActive(true);
+        }
+
+        void DestroyActiveGameController()
+        {
+            if (_activeGameId < 0)
+                return;
+
+            if (_gameControllers.TryGetValue(_activeGameId, out var controller))
+            {
+                controller.CloseRequested -= OnGameCloseRequested;
+                _gameControllers.Remove(_activeGameId);
+            }
+
+            if (_gameInstancesById.TryGetValue(_activeGameId, out var instance))
+            {
+                _gameInstancesById.Remove(_activeGameId);
+                if (instance != null)
+                    Destroy(instance);
+            }
+
+            _activeGameId = -1;
         }
     }
 }

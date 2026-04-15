@@ -252,7 +252,7 @@ MonoBehaviour:
     title: MatchingPair
     icon: {fileID: 21300000, guid: 74ee0de44ba86994a9dbc77d6478c717, type: 3}
     catalogCardPrefab: {fileID: 6075215169746731458, guid: 286cfcf8979974a56baa34a9c55a1211, type: 3}
-    lobbyPrefab: {fileID: 5792964267069586212, guid: dbdd9dba36b9f4e9aaa7ab8416f0da88, type: 3}
+    lobbyPrefab: {fileID: 4547267087029454260, guid: f95496e30d274490f88c823f25e4c19d, type: 3}
   - gameId: 1
     title: WaterSort
     icon: {fileID: 21300000, guid: 702283bb52f77c44281c7c2fb9da57ab, type: 3}

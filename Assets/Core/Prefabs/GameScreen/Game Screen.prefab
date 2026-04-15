@@ -120,6 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3b4c5d6e7f8091a2b3c4d5e6f708192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameLobbyPrefab: {fileID: 5095449205000387407, guid: 095fa45744d894617af4e327c274ce6d, type: 3}
-  _cardLobbyParent: {fileID: 589573492615480925}
-  _gameLobbiesParent: {fileID: 8376577917269053960}
+  _gameCatalogPrefab: {fileID: 5095449205000387407, guid: 095fa45744d894617af4e327c274ce6d, type: 3}
+  _gameCatalogParent: {fileID: 589573492615480925}
+  _gameControllersParent: {fileID: 8376577917269053960}

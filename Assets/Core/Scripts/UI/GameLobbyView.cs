@@ -34,7 +34,7 @@ namespace PuzzleApp.UI
                 _backButton.onClick.RemoveListener(OnBack);
         }
 
-        void OnPlay() => PlayClicked?.Invoke();
-        void OnBack() => BackClicked?.Invoke();
+        protected virtual void OnPlay() => PlayClicked?.Invoke();
+        protected virtual void OnBack() => BackClicked?.Invoke();
     }
 }
