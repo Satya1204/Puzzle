@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db08db2008d07406c97f5ae330437818, type: 3}
+  m_Name: MatchObjectsGameDefinition
+  m_EditorClassIdentifier: 
+  gameId: 1
+  title: MatchObjects
+  icon: {fileID: 21300000, guid: 702283bb52f77c44281c7c2fb9da57ab, type: 3}
+  catalogCardPrefab: {fileID: 6075215169746731458, guid: 494c0dd44513c4d2eb629a0f6af1e087, type: 3}
+  lobbyPrefab: {fileID: 5792964267069586212, guid: 6d10381dbf10e4e34a06a06aac09cc23, type: 3}

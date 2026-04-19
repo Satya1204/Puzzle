@@ -1,50 +1,71 @@
 # Puzzle App — Architecture
 
-Lightweight in-project framework: **composition root**, **custom DI**, **typed signal bus**, **subsystems**, **feature modules**. No third-party DI or message-bus packages.
+Lightweight in-project framework: **composition root**, **custom DI**, **typed signal bus**, **subsystems**, **feature modules**, **ScriptableObject-driven data**. No third-party DI or message-bus packages.
 
 ---
 
 ## 1. Layer map
 
-| Layer | Responsibility | Location (example) |
-|--------|----------------|---------------------|
-| **Bootstrap** | Single startup: build container, run modules | `Assets/Scripts/App/Bootstrap/` |
-| **DI** | Register and resolve singletons | `Assets/Scripts/App/DI/` |
-| **Signals** | Cross-feature events (structs) | `Assets/Scripts/App/Signals/` |
-| **Subsystems** | App-wide facades (navigation, HUD) | `Assets/Scripts/App/Subsystems/` |
-| **Controllers** | Bridge MonoBehaviour views ↔ bus / services | `Assets/Scripts/App/Controllers/` |
-| **Modules** | Feature registration + init order | `Assets/Scripts/App/Modules/`, `Assets/Scripts/Features/*/` |
-| **Views** | UI only; no business rules | `Assets/Scripts/UI/` |
+| Layer | Responsibility | Location |
+|--------|----------------|----------|
+| **Bootstrap** | Single startup: build container, run modules, hold `AppConfig` | `Assets/Core/Scripts/App/Bootstrap/` |
+| **DI** | Register and resolve singletons | `Assets/Core/Scripts/App/DI/` |
+| **Signals** | Cross-feature events (readonly structs) | `Assets/Core/Scripts/App/Signals/` |
+| **Subsystems** | App-wide facades (navigation, HUD, lobby) | `Assets/Core/Scripts/App/Subsystems/` |
+| **Services** | Cross-cutting infra (data providers) | `Assets/Core/Scripts/App/Services/` |
+| **Controllers (app)** | Bridge MonoBehaviour views ↔ bus / services | `Assets/Core/Scripts/App/Controllers/` |
+| **Modules** | Feature registration + init order | `Assets/Core/Scripts/App/Modules/`, `Assets/Core/Scripts/Features/*/`, per-game folders |
+| **Views** | UI only; no business rules | `Assets/Core/Scripts/UI/` |
+| **Core features** | Shell, catalog, lobby, home, shop | `Assets/Core/Scripts/Features/*/` |
+| **Game features** | Per-game definition, catalog, module, game scripts | `Assets/<GameName>/Scripts/` (e.g. `Matching Pair/`, `Match Objects/`) |
 
 ---
 
-## 2. Startup sequence
+## 2. Data assets (ScriptableObjects)
 
-1. **`AppBootstrap.Awake`** (on `UILayer_HUD` root, early execution order).
-2. All view references are **`[SerializeField]`** — assigned in the inspector, no runtime search.
-3. Game entries use a **`GameDefinition[]`** on **`GameScreenCardsView`**: each entry carries game data, a per-game **`catalogCardPrefab`** for the grid, and a **`lobbyPrefab`**. **`AppBootstrap`** only wires shell views and lobby parent.
-4. Create **`ServiceRegistry`**, register **`ISignalBus`** instance.
-5. For each **`IAppModule`**: **`Register(services)`** then **`Initialize(services)`**.
-6. Order today: **`ShellModule`** → **`GameCatalogModule`** → **`LobbyModule`**.
+Gameplay data is edited as assets, not inline serialized fields.
+
+| Asset | Role |
+|-------|------|
+| **`AppConfig`** | Single bundle holding every feature's config. One slot on `AppBootstrap`. |
+| **`GameCatalogConfig`** | List of `GameDefinition[]` shown on the main catalog grid. |
+| **`GameDefinition`** | `gameId`, `title`, `icon`, `catalogCardPrefab`, `lobbyPrefab`. |
+| **`MatchingPairCatalogConfig`** | List of `MatchingPairDefinition[]` (one per piece-count variant). |
+| **`MatchingPairDefinition`** | `pieceCount`, `title`, `icon`, `cardPrefab`, `gamePrefab`. |
+| **`MatchObjectsDefinition`** | `id`, `title`, `icon`, `cardPrefab`, `pairs[]` (clue/answer sprite pairs). |
+
+**Rule:** data flows *config asset → DI → subsystem/controller → view*. Views never own business data.
 
 ---
 
-## 3. Dependency injection (`ServiceRegistry`)
+## 3. Startup sequence
+
+1. **`AppBootstrap.Awake`** (`[DefaultExecutionOrder(-1000)]`).
+2. All view references and the single **`AppConfig`** are **`[SerializeField]`** — assigned in the inspector, no runtime search.
+3. Create **`ServiceRegistry`**. Register infrastructure (`ISignalBus`, `IGameDataProvider`) and each sub-config pulled from **`AppConfig`** (`GameCatalogConfig`, `MatchingPairCatalogConfig`, …).
+4. Instantiate module list (see §7). For each **`IAppModule`**: call **`Register(services)`**.
+5. After all modules registered: call **`Initialize(services)`** on each (warm up singletons, wire HUD).
+6. Publish **`AppBootstrap.Services`** as a static accessor so MonoBehaviours instantiated later (e.g. a game prefab's controller) can resolve services without constructor injection.
+
+---
+
+## 4. Dependency injection (`ServiceRegistry`)
 
 - **`RegisterInstance<T>(T instance)`** — already constructed.
 - **`RegisterSingleton<T>(Func<IServiceRegistry, T> factory)`** — lazy, one instance.
 - **`Resolve<T>()`** / **`TryResolve<T>()`**.
 
-MonoBehaviours are **not** auto-injected; they are assigned via `[SerializeField]` on `AppBootstrap` and passed into modules/controllers.
+MonoBehaviours are **not** auto-injected. Two patterns:
+
+- **Serialized:** `AppBootstrap` holds `[SerializeField]` references and passes them into module constructors.
+- **Service locator:** runtime-instantiated MonoBehaviours (game lobby prefabs, game boards) call `AppBootstrap.Services?.Resolve<T>()` in `Awake`.
 
 ---
 
-## 4. Signal bus
+## 5. Signal bus
 
 - **`ISignalBus.Subscribe<TSignal>(Action<TSignal>)`** → returns **`IDisposable`**.
 - **`ISignalBus.Publish<TSignal>(TSignal)`**.
-
-### Signals (initial set)
 
 | Signal | Meaning |
 |--------|---------|
@@ -55,33 +76,66 @@ MonoBehaviours are **not** auto-injected; they are assigned via `[SerializeField
 
 ---
 
-## 5. Subsystems
+## 6. Subsystems and services
 
 | Interface | Role |
 |-----------|------|
 | **`INavigationSubsystem`** | Current tab; reacts to `MainTabSelectedSignal`; publishes `ActiveHudScreenChangedSignal` |
 | **`IHudScreenSubsystem`** | Registers `GameObject` roots per tab; shows/hides on `ActiveHudScreenChangedSignal`; `HideAll()` for lobby overlay |
-| **`IGameCatalogSubsystem`** | Returns catalog data (`GameCardViewModel` list) |
-| **`ILobbySubsystem`** | Maps `gameId -> lobby root`; reacts to `GameCardSelectedSignal` / `LobbyClosedSignal`; toggles lobby vs HUD |
+| **`IGameCatalogSubsystem`** | Returns catalog data (`IReadOnlyList<GameDefinition>`, `IReadOnlyList<GameCardViewModel>`) from `GameCatalogConfig` |
+| **`ILobbySubsystem`** | Maps `gameId → lobby root`; reacts to `GameCardSelectedSignal` / `LobbyClosedSignal`; toggles lobby vs HUD |
+| **`IMatchingPairCatalog`** | `GetVariants()` and `TryGetVariant(pieceCount, out def)` — built from `MatchingPairCatalogConfig` |
+| **`IMatchObjectsDataService`** | Loads `match_objects_data.json` via `IGameDataProvider`; picks rounds and maps pair indices → sprites |
+| **`IGameDataProvider`** | Abstracts JSON/text loading. Default impl `ResourcesGameDataProvider` uses `Resources.Load<TextAsset>`. |
+| **`IGameController`** (interface only) | Implemented by each game's root MonoBehaviour on its `lobbyPrefab`. `GameScreenController` discovers it and subscribes to `CloseRequested`. |
 
 ---
 
-## 6. Feature modules
+## 7. Feature modules
 
 Each module implements **`IAppModule`**:
 
-- **`Register(IServiceRegistry)`** — bind services and controllers.
-- **`Initialize(IServiceRegistry)`** — resolve side effects (wire HUD, refresh nav).
+- **`Register(IServiceRegistry)`** — bind services and subsystems.
+- **`Initialize(IServiceRegistry)`** — resolve side effects (wire HUD, warm singletons, republish nav state).
 
-| Module | Registers | Notes |
-|--------|-----------|--------|
-| **`ShellModule`** | `NavigationSubsystem`, `HudScreenSubsystem`, `BottomBarController` | `BottomBarController` publishes tab signals |
-| **`GameCatalogModule`** | `GameCatalogSubsystem`, `GameScreenController` | Registers **Game** HUD root; republishes current tab after registration |
-| **`LobbyModule`** | `LobbySubsystem`, `GameLobbyController` per entry | Reads `GameDefinition[]` from `GameScreenCardsView`; instantiates lobby prefabs at runtime |
+| Module | Location | Registers |
+|--------|----------|-----------|
+| **`ShellModule`** | Core | `NavigationSubsystem`, `HudScreenSubsystem`, `BottomBarController` |
+| **`LobbyModule`** | Core | `LobbySubsystem` |
+| **`HomeScreenModule`** | Core | Home HUD screen registration |
+| **`GameCatalogModule`** | Core | `GameCatalogSubsystem` built from `GameCatalogConfig`; initializes `GameScreenController` |
+| **`ShopScreenModule`** | Core | Shop HUD screen registration |
+| **`MatchingPairModule`** | Game feature | `IMatchingPairCatalog` built from `MatchingPairCatalogConfig` |
+| **`MatchObjectsModule`** | Game feature | `IMatchObjectsDataService` (uses `IGameDataProvider`) |
+
+**Instantiation order in `AppBootstrap`:** `Shell → Lobby → HomeScreen → GameCatalog → ShopScreen → MatchingPair → MatchObjects`.
 
 ---
 
-## 7. Runtime flow (tabs)
+## 8. Card/view inheritance
+
+All lobby card items extend a generic base to share button wiring and icon binding:
+
+```
+MonoBehaviour
+  └─ CardItemBase<TData>            // [SerializeField] Button _button, Image _iconImage; Bind(TData), abstract ApplyBinding(TData), abstract OnClicked(TData)
+      ├─ GameCardItem               // TData = GameCardViewModel (main catalog)
+      ├─ MatchingPairCardItem       // TData = MatchingPairDefinition (lobby grid)
+      └─ MatchObjectsCardItem       // TData = MatchObjectsDefinition (category grid)
+```
+
+All game lobby views extend a base:
+
+```
+MonoBehaviour
+  └─ GameLobbyView                  // Play + Back buttons, events
+      ├─ MatchingPairLobbyView      // scroll grid of piece-count cards
+      └─ MatchObjectsLobbyView      // scroll grid of category cards
+```
+
+---
+
+## 9. Runtime flow — tab switching
 
 ```mermaid
 sequenceDiagram
@@ -101,85 +155,111 @@ sequenceDiagram
 
 ---
 
-## 8. Runtime flow (game cards)
+## 10. Runtime flow — catalog → game lobby → game
 
 ```mermaid
 sequenceDiagram
     participant Cat as GameCatalogSubsystem
-    participant GCtrl as GameScreenController
+    participant GS as GameScreenController
     participant Grid as GameScreenCardsView
-    participant Item as GameCardItem
-    participant Bus as SignalBus
+    participant IGC as IGameController (e.g. MatchingPairController)
+    participant Sub as Feature subsystem (e.g. IMatchingPairCatalog)
+    participant LView as Feature lobby view
 
-    GCtrl->>Cat: GetGames()
-    GCtrl->>Grid: SetGames(...)
-    Item->>GCtrl: CardClicked(gameId)
-    GCtrl->>Bus: Publish(GameCardSelectedSignal)
+    GS->>Cat: GetGames()
+    GS->>Grid: SetGames(viewModels)
+    Grid->>GS: CardClicked(gameId)
+    GS->>GS: Instantiate lobbyPrefab from GameDefinition
+    GS->>IGC: discover IGameController, subscribe CloseRequested
+    IGC->>Sub: AppBootstrap.Services.Resolve<...>()
+    IGC->>LView: SetVariants(subsystem.GetVariants())
+    LView->>IGC: CardClicked(variant)
+    IGC->>IGC: Instantiate gamePrefab under _gameParent
+    IGC->>LView: SetScrollViewActive(false)
+
+    Note over IGC: user plays game
+    IGC->>GS: CloseRequested
+    GS->>GS: destroy game instance, re-show catalog
 ```
 
 ---
 
-## 9. Runtime flow (lobby navigation)
+## 11. View rules
 
-```mermaid
-sequenceDiagram
-    participant Item as GameCardItem
-    participant GCtrl as GameScreenController
-    participant Bus as SignalBus
-    participant Lobby as LobbySubsystem
-    participant Hud as HudScreenSubsystem
-    participant LView as GameLobbyView
-    participant LCtrl as GameLobbyController
-    participant Nav as NavigationSubsystem
-
-    Item->>GCtrl: CardClicked(gameId=2)
-    GCtrl->>Bus: Publish(GameCardSelectedSignal)
-    Bus->>Lobby: OnCardSelected
-    Lobby->>Hud: HideAll()
-    Lobby->>Lobby: Activate matching lobby root
-
-    LView->>LCtrl: BackClicked
-    LCtrl->>Bus: Publish(LobbyClosedSignal)
-    Bus->>Lobby: OnLobbyClosed
-    Lobby->>Lobby: Hide all lobbies
-    Lobby->>Nav: PublishCurrent()
-    Nav->>Bus: Publish(ActiveHudScreenChangedSignal)
-    Bus->>Hud: Restore Game tab
-```
+- Views (`BottomBarView`, `GameScreenCardsView`, card items, `GameLobbyView` subclasses): events, layout, prefab spawning only. **No business data fields.**
+- Controllers subscribe to views, resolve services/subsystems, and push data into views via explicit methods (e.g. `SetVariants(...)`, `SetGames(...)`).
+- Subsystems own cross-feature state and policies.
+- Game-specific data lives in ScriptableObject assets wired through `AppConfig`, not on view prefabs.
 
 ---
 
-## 10. View rules
+## 12. Adding a new game
 
-- **`BottomBarView`**, **`GameScreenCardsView`**, **`GameCardItem`**, **`GameLobbyView`** (and subclasses): events and layout only.
-- **Controllers** subscribe to views and publish/consume signals.
-- **Subsystems** own cross-feature state and policies.
-
----
-
-## 11. Extension checklist
-
-- [ ] Add **Home** / **Shop** screens: new prefabs + register in **`IHudScreenSubsystem`** from new modules.
-- [x] Subscribe to **`GameCardSelectedSignal`** in **`LobbySubsystem`** to open game lobbies.
-- [ ] Add lobby prefabs for remaining games (Jigsaw, Find It) — add `GameDefinition` entries on `GameScreenCardsView` in the inspector.
-- [ ] Wire **Play** callback via `GameLobbyController(view, bus, onPlay)` to load gameplay scenes.
-- [x] Replace `FindObjectOfType` in **`AppBootstrap`** with `[SerializeField]` references.
+1. Create game scripts folder `Assets/<GameName>/Scripts/` and prefabs folder.
+2. **Definition SO** — `XDefinition : ScriptableObject` with game data + `cardPrefab` + `gamePrefab`. Create one `.asset` per variant/category.
+3. **Catalog config SO** — `XCatalogConfig : ScriptableObject` holding `XDefinition[]`. Create one `.asset`.
+4. **Catalog subsystem** — `IXCatalog` + impl, built from the config. Provides lookup by key.
+5. **Module** — `XModule : IAppModule` registering the subsystem from the config.
+6. **Controller** — `XController : MonoBehaviour, IGameController` on the `lobbyPrefab` root. In `Awake`: resolve `IXCatalog` via `AppBootstrap.Services`, call `view.SetVariants(...)`, subscribe card clicks.
+7. **Lobby view** — `XLobbyView : GameLobbyView` (pure view): `SetVariants(IReadOnlyList<...>)` spawns card items, forwards clicks.
+8. **Card item** — `XCardItem : CardItemBase<XDefinition>`.
+9. **Game prefab** — the actual game UI + `XBoardView` (or game controller) with `GameWon` event.
+10. **Wire into app:** add field to `AppConfig`, register instance in `AppBootstrap.Bootstrap()`, add new module to the module array.
+11. **Expose in main catalog:** add a new `GameDefinition.asset` (pointing `lobbyPrefab` at the lobby prefab) and include it in `GameCatalogConfig.games[]`.
 
 ---
 
-## 12. Key files
+## 13. Extension checklist
+
+- [x] Main catalog data lives on a `GameCatalogConfig` SO (not on the view).
+- [x] Single `AppConfig` bundle on `AppBootstrap` replaces per-feature serialized slots.
+- [x] Per-game catalogs follow the same pattern: definition SO + config SO + module + subsystem.
+- [x] `CardItemBase<TData>` generic base for lobby card items.
+- [x] `IGameDataProvider` abstracts Resources-based JSON loading.
+- [x] `MatchingPair` feature migrated to SO-driven catalog.
+- [x] `MatchObjects` feature added (JSON-driven rounds + drag-and-drop gameplay).
+- [ ] `MatchObjectsLobbyView` still holds `MatchObjectsDefinition[]` inline — migrate to SO catalog for parity.
+- [ ] Wire **Play** callback via `GameLobbyController(view, bus, onPlay)` for games that use the explicit Play button.
+- [ ] Add remaining games (WaterSort, etc.) via the §12 recipe.
+
+---
+
+## 14. Key files
 
 | File | Purpose |
 |------|---------|
-| `Assets/Scripts/App/Bootstrap/AppBootstrap.cs` | Composition root (serialized refs) |
-| `Assets/Scripts/App/DI/ServiceRegistry.cs` | DI container |
-| `Assets/Scripts/App/Signals/SignalBus.cs` | Signal bus |
-| `Assets/Scripts/App/Signals/AppSignals.cs` | Signal payload types |
-| `Assets/Scripts/App/Subsystems/LobbySubsystem.cs` | Lobby routing subsystem |
-| `Assets/Scripts/UI/GameLobbyView.cs` | Base lobby view (Play / Back) |
-| `Assets/Scripts/Features/Shell/ShellModule.cs` | Shell feature |
-| `Assets/Scripts/Features/GameCatalog/*` | Game list feature |
-| `Assets/Scripts/Features/Lobby/LobbyModule.cs` | Lobby feature module (data-driven) |
-| `Assets/Core/Scripts/Features/GameCatalog/GameDefinition.cs` | Serializable game data + lobby prefab reference |
-| `Assets/Scripts/Features/Lobby/GameLobbyController.cs` | Generic lobby controller |
-| `Assets/Prefabs/UILayer_HUD.prefab` | Hosts `AppBootstrap` |
+| `Assets/Core/Scripts/App/Bootstrap/AppBootstrap.cs` | Composition root; static `Services` accessor |
+| `Assets/Core/Scripts/App/Bootstrap/AppConfig.cs` | SO bundle of all feature configs |
+| `Assets/Core/Scripts/App/DI/ServiceRegistry.cs` | DI container |
+| `Assets/Core/Scripts/App/Signals/SignalBus.cs` | Signal bus |
+| `Assets/Core/Scripts/App/Signals/AppSignals.cs` | Signal payload types |
+| `Assets/Core/Scripts/App/Services/IGameDataProvider.cs` | JSON/text loading abstraction |
+| `Assets/Core/Scripts/App/Services/ResourcesGameDataProvider.cs` | Resources-based impl |
+| `Assets/Core/Scripts/App/Subsystems/LobbySubsystem.cs` | Lobby routing subsystem |
+| `Assets/Core/Scripts/App/Subsystems/HudScreenSubsystem.cs` | HUD screen visibility |
+| `Assets/Core/Scripts/App/Subsystems/NavigationSubsystem.cs` | Tab/navigation state |
+| `Assets/Core/Scripts/Features/GameCatalog/GameDefinition.cs` | Catalog entry SO |
+| `Assets/Core/Scripts/Features/GameCatalog/GameCatalogConfig.cs` | Catalog list SO |
+| `Assets/Core/Scripts/Features/GameCatalog/GameCatalogSubsystem.cs` | Catalog lookup |
+| `Assets/Core/Scripts/Features/GameCatalog/GameScreenController.cs` | Instantiates lobby prefabs; discovers `IGameController` |
+| `Assets/Core/Scripts/Features/GameCatalog/IGameController.cs` | Game-side contract for catalog integration |
+| `Assets/Core/Scripts/UI/CardItemBase.cs` | Generic card base |
+| `Assets/Core/Scripts/UI/GameLobbyView.cs` | Base lobby view |
+| `Assets/Core/Scripts/UI/GameScreenCardsView.cs` | Pure catalog grid view |
+| `Assets/Matching Pair/Scripts/MatchingPairDefinition.cs` | Piece-count variant SO |
+| `Assets/Matching Pair/Scripts/MatchingPairCatalogConfig.cs` | Variant list SO |
+| `Assets/Matching Pair/Scripts/MatchingPairCatalog.cs` | `IMatchingPairCatalog` impl |
+| `Assets/Matching Pair/Scripts/MatchingPairModule.cs` | Feature module |
+| `Assets/Matching Pair/Scripts/MatchingPairBoardView.cs` | Gameplay board |
+| `Assets/Core/Scripts/UI/MatchingPairController.cs` | Lobby → game controller, `IGameController` |
+| `Assets/Core/Scripts/UI/MatchingPairLobbyView.cs` | Pure variant grid view |
+| `Assets/Match Objects/Script/MatchObjectsDefinition.cs` | Category SO (clue/answer pairs) |
+| `Assets/Match Objects/Script/MatchObjectsDataService.cs` | JSON-driven round/pair selection |
+| `Assets/Match Objects/Script/MatchObjectsModule.cs` | Feature module |
+| `Assets/Match Objects/Script/MatchObjectsBoardView.cs` | Drag-to-match game board |
+| `Assets/Match Objects/Script/MatchObjectsDraggableItem.cs` | Bottom-bar draggable |
+| `Assets/Match Objects/Script/MatchObjectsDropZone.cs` | Right-column drop target |
+| `Assets/Match Objects/Script/MatchObjectsClueItem.cs` | Left-column static clue |
+| `Assets/Core/Scripts/UI/MatchObjectsController.cs` | Lobby → game controller, `IGameController` |
+| `Assets/Core/Scripts/UI/MatchObjectsLobbyView.cs` | Category grid view |
+| `Assets/Resources/match_objects_data.json` | Match Objects round/pair indices |

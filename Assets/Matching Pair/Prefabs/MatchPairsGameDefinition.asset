@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db08db2008d07406c97f5ae330437818, type: 3}
+  m_Name: MatchPairsGameDefinition
+  m_EditorClassIdentifier: 
+  gameId: 0
+  title: MatchPairs
+  icon: {fileID: 21300000, guid: 74ee0de44ba86994a9dbc77d6478c717, type: 3}
+  catalogCardPrefab: {fileID: 6075215169746731458, guid: 286cfcf8979974a56baa34a9c55a1211, type: 3}
+  lobbyPrefab: {fileID: 5792964267069586212, guid: dbdd9dba36b9f4e9aaa7ab8416f0da88, type: 3}

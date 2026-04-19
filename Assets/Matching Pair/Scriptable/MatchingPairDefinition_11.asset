@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6520aee9fa9741299ebaffc367e5f81, type: 3}
+  m_Name: MatchingPairDefinition_11
+  m_EditorClassIdentifier: 
+  pieceCount: 11
+  title: 11
+  icon: {fileID: 21300000, guid: ae2e7e035178ca0419877025cc09f95c, type: 3}
+  cardPrefab: {fileID: 1648451424967016724, guid: 09b4dda21af834fa3a80aa6cb019a87b, type: 3}
+  gamePrefab: {fileID: 3281387168335221608, guid: 24b6583d19b254c1dbc338fd6def8967, type: 3}

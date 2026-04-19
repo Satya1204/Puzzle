@@ -1,24 +1,12 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
+using PuzzleApp.App.Bootstrap;
 using PuzzleApp.Features.GameCatalog;
 using PuzzleApp.Features.MatchingPair;
 using PuzzleApp.MatchingPair;
 
 namespace PuzzleApp.UI
 {
-    /// <summary>
-    /// Game controller for the Matching Pair screen.
-    /// <see cref="GameScreenController"/> discovers this via <see cref="IGameController"/>
-    /// and subscribes to <see cref="CloseRequested"/> to return to the catalog.
-    ///
-    /// Holds a reference to the lobby view (card grid) and a game parent transform
-    /// where selected game prefabs are instantiated.
-    ///
-    /// When a card is tapped the matching N-Pieces prefab is instantiated,
-    /// its <see cref="MatchingPairBoardView"/> is discovered, and
-    /// <see cref="MatchingPairBoardView.StartGame"/> is called automatically.
-    /// </summary>
     public class MatchingPairController : MonoBehaviour, IGameController
     {
         [SerializeField] MatchingPairLobbyView _lobbyView;
@@ -26,26 +14,30 @@ namespace PuzzleApp.UI
 
         public event Action CloseRequested;
 
-        readonly Dictionary<int, MatchingPairDefinition> _definitionByPieceCount = new();
+        IMatchingPairCatalog _catalog;
         GameObject _activeGameInstance;
         MatchingPairBoardView _activeBoard;
 
         void Awake()
         {
+            Debug.Log($"[MatchingPair] Controller.Awake on '{name}'. lobbyView={(_lobbyView != null ? _lobbyView.name : "NULL")} services={(AppBootstrap.Services != null ? "OK" : "NULL")}");
+
             if (_lobbyView == null)
             {
                 Debug.LogError("MatchingPairController: assign the MatchingPairLobbyView in the inspector.");
                 return;
             }
 
-            var definitions = _lobbyView.GetDefinitions();
-            for (int i = 0; i < definitions.Count; i++)
+            _catalog = AppBootstrap.Services?.Resolve<IMatchingPairCatalog>();
+            if (_catalog == null)
             {
-                var def = definitions[i];
-                if (def != null)
-                    _definitionByPieceCount[def.pieceCount] = def;
+                Debug.LogError("MatchingPairController: IMatchingPairCatalog not available. Ensure MatchingPairModule is registered.");
+                return;
             }
 
+            var variants = _catalog.GetVariants();
+            Debug.Log($"[MatchingPair] Controller.Awake -> catalog resolved, variants.Count={(variants != null ? variants.Count : -1)}. Calling SetVariants.");
+            _lobbyView.SetVariants(variants);
             _lobbyView.CardClicked += OnCardClicked;
             _lobbyView.BackClicked += OnBackClicked;
         }
@@ -63,28 +55,37 @@ namespace PuzzleApp.UI
 
         void OnCardClicked(int pieceCount)
         {
-            if (!_definitionByPieceCount.TryGetValue(pieceCount, out var definition))
+            Debug.Log($"[MatchingPair] Controller.OnCardClicked pieceCount={pieceCount}");
+
+            if (_catalog == null || !_catalog.TryGetVariant(pieceCount, out var definition))
             {
-                Debug.LogWarning($"MatchingPairController: no definition found for {pieceCount} pieces.");
+                Debug.LogWarning($"[MatchingPair] OnCardClicked: no definition found for {pieceCount} pieces.");
                 return;
             }
 
             if (definition.gamePrefab == null)
             {
-                Debug.LogWarning($"MatchingPairController: no game prefab assigned for '{definition.title}'.");
+                Debug.LogWarning($"[MatchingPair] OnCardClicked: no game prefab assigned for '{definition.title}'.");
                 return;
             }
 
             DestroyActiveGame();
 
             var parent = _gameParent != null ? _gameParent : transform;
+            Debug.Log($"[MatchingPair] OnCardClicked: spawning gamePrefab='{definition.gamePrefab.name}' under parent='{parent.name}' (gameParent {(_gameParent != null ? "SET" : "NULL, using controller transform")})");
             _activeGameInstance = Instantiate(definition.gamePrefab, parent);
+            Debug.Log($"[MatchingPair] OnCardClicked: spawned '{_activeGameInstance.name}', active={_activeGameInstance.activeInHierarchy} childCount={_activeGameInstance.transform.childCount}");
 
             _activeBoard = _activeGameInstance.GetComponentInChildren<MatchingPairBoardView>(true);
             if (_activeBoard != null)
             {
+                Debug.Log($"[MatchingPair] OnCardClicked: board found on '{_activeBoard.name}', calling StartGame.");
                 _activeBoard.GameWon += OnGameWon;
                 _activeBoard.StartGame();
+            }
+            else
+            {
+                Debug.LogError($"[MatchingPair] OnCardClicked: spawned prefab '{definition.gamePrefab.name}' has NO MatchingPairBoardView component in its hierarchy.");
             }
 
             _lobbyView.SetScrollViewActive(false);

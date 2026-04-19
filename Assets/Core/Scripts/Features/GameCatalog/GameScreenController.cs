@@ -27,9 +27,6 @@ namespace PuzzleApp.Features.GameCatalog
 
         public GameObject ScreenRoot => gameObject;
 
-        public IReadOnlyList<GameDefinition> GetGameDefinitions() =>
-            ResolveCardsViewSource() != null ? ResolveCardsViewSource().GetGameDefinitions() : Array.Empty<GameDefinition>();
-
         public void Initialize(
             IGameCatalogSubsystem gameCatalogSubsystem,
             ILobbySubsystem screenVisibilitySubsystem,
@@ -88,17 +85,6 @@ namespace PuzzleApp.Features.GameCatalog
             var parent = _gameCatalogParent != null ? _gameCatalogParent : transform;
             _gameCatalogInstance = Instantiate(_gameCatalogPrefab, parent);
             _cardsView = _gameCatalogInstance.GetComponentInChildren<GameScreenCardsView>(true);
-        }
-
-        GameScreenCardsView ResolveCardsViewSource()
-        {
-            if (_cardsView != null)
-                return _cardsView;
-
-            if (_gameCatalogPrefab == null)
-                return null;
-
-            return _gameCatalogPrefab.GetComponentInChildren<GameScreenCardsView>(true);
         }
 
         bool EnsureGameInstantiated(int gameId)

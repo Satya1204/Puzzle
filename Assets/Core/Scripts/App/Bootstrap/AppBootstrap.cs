@@ -1,10 +1,13 @@
 using UnityEngine;
 using PuzzleApp.App.DI;
 using PuzzleApp.App.Modules;
+using PuzzleApp.App.Services;
 using PuzzleApp.App.Signals;
 using PuzzleApp.Features.GameCatalog;
 using PuzzleApp.Features.Home;
 using PuzzleApp.Features.Lobby;
+using PuzzleApp.Features.MatchingPair;
+using PuzzleApp.Features.MatchObjects;
 using PuzzleApp.Features.Shell;
 using PuzzleApp.Features.Shop;
 using PuzzleApp.UI;
@@ -20,6 +23,11 @@ namespace PuzzleApp.App.Bootstrap
         [SerializeField] GameScreenController _gameScreenController;
         [SerializeField] HomeScreenController _homeScreenController;
         [SerializeField] ShopScreenController _shopScreenController;
+
+        [Header("Catalog")]
+        [SerializeField] AppConfig _appConfig;
+
+        public static IServiceRegistry Services { get; private set; }
 
         IServiceRegistry _services;
         IAppModule[] _modules;
@@ -40,8 +48,26 @@ namespace PuzzleApp.App.Bootstrap
                 return;
             }
 
+            if (_appConfig == null)
+            {
+                Debug.LogError("AppBootstrap: assign AppConfig in the inspector.");
+                return;
+            }
+
+            if (_appConfig.gameCatalog == null || _appConfig.matchingPairCatalog == null || _appConfig.matchObjectsLevels == null)
+            {
+                Debug.LogError("AppBootstrap: AppConfig is missing one or more catalog references.");
+                return;
+            }
+
             _services = new ServiceRegistry();
             _services.RegisterInstance<ISignalBus>(new SignalBus());
+            _services.RegisterInstance<IGameDataProvider>(new ResourcesGameDataProvider());
+            _services.RegisterInstance<AppConfig>(_appConfig);
+            _services.RegisterInstance<GameCatalogConfig>(_appConfig.gameCatalog);
+            _services.RegisterInstance<MatchingPairCatalogConfig>(_appConfig.matchingPairCatalog);
+            _services.RegisterInstance<MatchObjectsLevelConfig>(_appConfig.matchObjectsLevels);
+            Debug.Log($"[MatchingPair] Bootstrap registered MatchingPairCatalogConfig='{_appConfig.matchingPairCatalog.name}' variants.Length={(_appConfig.matchingPairCatalog.variants != null ? _appConfig.matchingPairCatalog.variants.Length : -1)}");
 
             _modules = new IAppModule[]
             {
@@ -50,6 +76,8 @@ namespace PuzzleApp.App.Bootstrap
                 new HomeScreenModule(_homeScreenController),
                 new GameCatalogModule(_gameScreenController),
                 new ShopScreenModule(_shopScreenController),
+                new MatchingPairModule(),
+                new MatchObjectsModule(),
             };
 
             foreach (var module in _modules)
@@ -57,10 +85,13 @@ namespace PuzzleApp.App.Bootstrap
 
             foreach (var module in _modules)
                 module.Initialize(_services);
+
+            Services = _services;
         }
 
         void OnDestroy()
         {
+            Services = null;
             _services?.Dispose();
             _services = null;
             _modules = null;

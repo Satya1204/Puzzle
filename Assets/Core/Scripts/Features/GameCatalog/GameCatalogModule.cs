@@ -17,8 +17,8 @@ namespace PuzzleApp.Features.GameCatalog
 
         public void Register(IServiceRegistry services)
         {
-            services.RegisterSingleton<IGameCatalogSubsystem>(_ =>
-                new GameCatalogSubsystem(_gameScreenController.GetGameDefinitions()));
+            services.RegisterSingleton<IGameCatalogSubsystem>(r =>
+                new GameCatalogSubsystem(r.Resolve<GameCatalogConfig>().games));
         }
 
         public void Initialize(IServiceRegistry services)

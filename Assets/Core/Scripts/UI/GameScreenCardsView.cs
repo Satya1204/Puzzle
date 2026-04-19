@@ -6,22 +6,12 @@ using PuzzleApp.Features.GameCatalog;
 
 namespace PuzzleApp.UI
 {
-    /// <summary>
-    /// Pure view for the game catalog grid.
-    /// Game list and per-game catalog prefabs are configured here in the inspector.
-    /// Controllers call <see cref="SetGames"/> with view models built from the same definitions.
-    /// </summary>
     public class GameScreenCardsView : MonoBehaviour
     {
         [SerializeField] RectTransform _scrollContent;
-        [SerializeField] GameDefinition[] _gameDefinitions;
         [SerializeField] [Min(1)] int _columnCount = 2;
 
         public event Action<int> CardClicked;
-
-        /// <summary>Definitions edited on this view; shared with catalog subsystem and lobby module.</summary>
-        public IReadOnlyList<GameDefinition> GetGameDefinitions() =>
-            _gameDefinitions != null ? _gameDefinitions : Array.Empty<GameDefinition>();
 
         void Awake() => ApplyGridConstraint();
 
