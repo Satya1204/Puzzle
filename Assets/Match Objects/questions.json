@@ -1,0 +1,164 @@
+{
+  "q1": {
+    "pairs": [
+      {
+        "left": "china_flag",
+        "right": "great_wall"
+      },
+      {
+        "left": "india_flag",
+        "right": "taj_mahal"
+      },
+      {
+        "left": "usa_flag",
+        "right": "statue_of_liberty"
+      },
+      {
+        "left": "egypt_flag",
+        "right": "pyramid"
+      },
+      {
+        "left": "france_flag",
+        "right": "eiffel_tower"
+      }
+    ],
+    "categories": [
+      "monuments"
+    ]
+  },
+  "q2": {
+    "pairs": [
+      {
+        "left": "china_flag",
+        "right": "xi_jinping"
+      },
+      {
+        "left": "india_flag",
+        "right": "narendra_modi"
+      },
+      {
+        "left": "usa_flag",
+        "right": "donald_trump"
+      },
+      {
+        "left": "australia_flag",
+        "right": "don_bradman"
+      },
+      {
+        "left": "france_flag",
+        "right": "emmanuel_macron"
+      }
+    ],
+    "categories": [
+      "leaders"
+    ]
+  },
+  "q3": {
+    "pairs": [
+      {
+        "left": "china_flag",
+        "right": "great_wall"
+      },
+      {
+        "left": "india_flag",
+        "right": "taj_mahal"
+      },
+      {
+        "left": "usa_flag",
+        "right": "statue_of_liberty"
+      },
+      {
+        "left": "australia_flag",
+        "right": "don_bradman"
+      },
+      {
+        "left": "france_flag",
+        "right": "emmanuel_macron"
+      }
+    ],
+    "categories": [
+      "mixed"
+    ]
+  },
+  "q4": {
+    "pairs": [
+      {
+        "left": "don_bradman",
+        "right": "cricket"
+      },
+      {
+        "left": "muhammad_ali",
+        "right": "boxing"
+      },
+      {
+        "left": "pele",
+        "right": "football"
+      },
+      {
+        "left": "kobe_bryant",
+        "right": "basketball"
+      },
+      {
+        "left": "rafael_nadal",
+        "right": "tennis"
+      }
+    ],
+    "categories": [
+      "sports"
+    ]
+  },
+  "q5": {
+    "pairs": [
+      {
+        "left": "kobe_bryant",
+        "right": "basketball"
+      },
+      {
+        "left": "rafael_nadal",
+        "right": "tennis"
+      },
+      {
+        "left": "egypt_flag",
+        "right": "pyramid"
+      },
+      {
+        "left": "france_flag",
+        "right": "eiffel_tower"
+      },
+      {
+        "left": "usa_flag",
+        "right": "donald_trump"
+      }
+    ],
+    "categories": [
+      "mixed"
+    ]
+  },
+  "q6": {
+    "pairs": [
+      {
+        "left": "muhammad_ali",
+        "right": "boxing"
+      },
+      {
+        "left": "china_flag",
+        "right": "great_wall"
+      },
+      {
+        "left": "sachin_tendulkar",
+        "right": "cricket"
+      },
+      {
+        "left": "lionel_messi",
+        "right": "football"
+      },
+      {
+        "left": "iraq_flag",
+        "right": "saddam_hussein"
+      }
+    ],
+    "categories": [
+      "mixed"
+    ]
+  }
+}
